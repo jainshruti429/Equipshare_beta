@@ -30,9 +30,35 @@ module.exports = {
     //get_login and post_login in routes page...passport k pain tha
     
     featured: function(req,res){
-        connection.query("SELECT * FROM featured WHERE display = 1", function(err,rows){
+        str1 = "SELECT featured.views, featured.start_date, featured.end_date, featured.display, all_equipment.expected_price,all_equipment.owner_id, all_equipment.subcategory, all_equipment.brand, all_equipment.model, all_equipment.id FROM all_equipment INNER JOIN featured ON featured.equip_id = all_equipment.id";
+        connection.query(str1, function(err,rows){
             if(err) throw err;
-            else res.render('./Profiles/admin/featured.ejs' , {datarows: rows});
+            else{
+                var current = [];
+                var old = []
+                var j =0;
+                var k =0;
+                for(var i = 0; i<rows.length; i++){
+                    if(rows[i].display){
+                        current[j] = rows[i];
+                        j++;
+                    }
+                    else{
+                        old[k] = rows[i];
+                        k++;
+                    } 
+                }
+                //iske neeche k baki h
+                str2 = "SELECT all_equipment.photo1, account.name, account.address1, account.address2, account.address3, account.city, account.state, account.zipcode, account.mobile FROM account INNER JOIN all_equipment ON account.id = ?";
+                connection.query(str2, [rows.owner_id] function(err2,rows2){
+                    if(err1) throw err1;
+                    else{
+
+                    }
+                });
+
+                res.render('./admin_featured.ejs' , {featured: current, details:rows2, old : old});
+            }
         });    
     },
 
@@ -117,7 +143,7 @@ module.exports = {
             if(err) throw err;
             if(rows.length) res.render('./Profiles/admin/add_featured.ejs',{datarows:rows});
             else{
-                connection.query("INSERT INTO featured (equip_id,display,start_date, views) VALUES (?,?,?,?)",[req.params.id,1,today,0], function(err){
+                connection.query("INSERT INTO featured (equip_id,display,start_date, views, end_date) VALUES (?,?,?,?, ?)",[req.params.id,1,today,0, 0], function(err){
                     if (err) throw err;
                     else {
                         connection.query("SELECT * FROM all_equipment WHERE available = 1", function(err, rows){

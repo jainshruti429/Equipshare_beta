@@ -10,7 +10,9 @@ For running the code locally, setup database first using steps given below. (in 
 This will set your database in the machine locally. Now,
 
 5. Exit from mysql terminal and change the database config on "config/database.js" (if any).
-6. Perform  ``` npm install ``` first and then setup the database accordingly.
-7. Run ``` node server.js ``` to run the application.
+6. Also make corresponding changes in the file config.js.
+7. Perform  ``` npm install ``` first and then setup the database accordingly.
+8. Run ``` node server.js ``` to run the application.
 
-P.S. while uploading code to server check that the configs are changed to that of server's database.
+P.S. you may change database name, but makesure the changes are reflected in the above mentioned files.
+P.P.S. while uploading code to server check that the configs are changed to that of server's database.

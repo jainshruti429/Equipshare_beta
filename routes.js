@@ -123,13 +123,16 @@ module.exports = function(app, passport) {
             //this is when login is successful
             req.logIn(user, function(err) {
                 if (err) return next(err); 
-                else return res.render('./admin_index.ejs', {msg:('Welcome '+req.session.name)});
+                else return res.render('./admin_index.ejs', {msg:('Welcome '+req.session.name), username:req.session.name});
             });   
         })(req,res,next);
     });
 
  // all are checking that the user is first logged in and then that he is of the right category that the request belong to.
     app.get('/admin_featured', general_functions.isLoggedInfunc, admin_access, admin_functions.featured);
+    app.get('/admin_my_equipment', general_functions.isLoggedInfunc,admin_access,admin_functions.my_equipment);
+    app.get('/admin_view_equipment', general_functions.isLoggedInfunc,admin_access, admin_functions.view_equipment);
+    
     app.get('/admin_remove_featured:id',general_functions.isLoggedInfunc,admin_access,admin_functions.remove_featured);
     app.get('/admin_add_featured',general_functions.isLoggedInfunc,admin_access,admin_functions.get_add_featured);
     app.get('/admin_add_featured:id',general_functions.isLoggedInfunc,admin_access,admin_functions.post_add_featured);
@@ -146,8 +149,6 @@ module.exports = function(app, passport) {
     app.post('/admin_reset_password', general_functions.isLoggedInfunc,admin_access, admin_functions.post_reset_password);
     app.get('/admin_update_equipment:id',general_functions.isLoggedInfunc,admin_access, admin_functions.get_update_this_equipment);
     app.post('/admin_update_equipment:id', general_functions.isLoggedInfunc,admin_access, admin_functions.post_update_this_equipment);
-    app.get('/admin_my_equipment', general_functions.isLoggedInfunc,admin_access,admin_functions.my_equipment);
-    app.get('/admin_view_equipment', general_functions.isLoggedInfunc,admin_access, admin_functions.view_equipment);
     app.get('/admin_add_equipment',general_functions.isLoggedInfunc,admin_access, admin_functions.get_add_equipment);
     app.post('/admin_add_equipment', general_functions.isLoggedInfunc,admin_access, admin_functions.post_add_equipment);
     app.get('/admin_update_profile',general_functions.isLoggedInfunc,admin_access, admin_functions.get_update_profile);
