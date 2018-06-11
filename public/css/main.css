@@ -853,7 +853,7 @@ xcustom form elements
 .image-custom {
     border: solid thin #e1e1e1;
     box-shadow: 2px 2px 10px #e1e1e1;
-    margin: 10px 0;
+    /*margin: 10px 0;*/
 }
 .custom-img1 {
     /*width: 348px!important;*/
@@ -912,8 +912,8 @@ xcustom form elements
     overflow: hidden;
 }
 .custom-image-verify img {
-    /*min-width: 100%;*/
-    min-height: 100%;
+    min-width: 100%;
+    /*min-height: 100%;*/
 }
 /******************************TABLE CSS*****************************/
 
