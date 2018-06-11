@@ -30,7 +30,7 @@ module.exports = {
     //get_login and post_login in routes page...passport k pain tha
     
     featured: function(req,res){
-        str1 = "SELECT featured.views, featured.start_date, featured.end_date, featured.display, all_equipment.expected_price,all_equipment.owner_id, all_equipment.subcategory, all_equipment.brand, all_equipment.model, all_equipment.id FROM all_equipment INNER JOIN featured ON featured.equip_id = all_equipment.id";
+        str1 = "SELECT featured.views, featured.start_date, featured.end_date, featured.display,all_equipment.photo1, all_equipment.expected_price, all_equipment.owner_id, all_equipment.subcategory, all_equipment.brand, all_equipment.model, all_equipment.id FROM all_equipment INNER JOIN featured ON featured.equip_id = all_equipment.id";
         connection.query(str1, function(err,rows){
             if(err) throw err;
             else{
@@ -48,16 +48,18 @@ module.exports = {
                         k++;
                     } 
                 }
-                //iske neeche k baki h
-                str2 = "SELECT all_equipment.photo1, account.name, account.address1, account.address2, account.address3, account.city, account.state, account.zipcode, account.mobile FROM account INNER JOIN all_equipment ON account.id = ?";
-                connection.query(str2, [rows.owner_id] function(err2,rows2){
-                    if(err1) throw err1;
+                str2 = "SELECT name, address1, address2, address3, city, state, zipcode, mobile FROM account WHERE id = ? OR id = ? OR id = ? ";
+                connection.query(str2, [current[0].owner_id,current[1].owner_id,current[2].owner_id] , function(err2,rows2){
+                    if(err2) throw err2;
                     else{
-
+                        //yaha se karna h
+                        var details = [];
+                        if(rows2.length == 3) details
+                        res.send(rows2);
                     }
                 });
 
-                res.render('./admin_featured.ejs' , {featured: current, details:rows2, old : old});
+                //res.render('./admin_featured.ejs' , {featured: current, details:rows2, old : old});
             }
         });    
     },
