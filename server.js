@@ -1,7 +1,7 @@
 //initializing and loading things
 var express  = require('express');
 var app = express();
-var port = process.env.PORT || 3306;
+var port = process.env.PORT || 8080;
 var serv = require('http').Server(app);
 var io = require('socket.io').listen(serv); // for p2p chat.
 var passport = require('passport');
