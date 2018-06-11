@@ -76,11 +76,9 @@ module.exports = {
                                 details[2] = rows2[0];   
                             }
                         }
-                        res.send(details);
+                        res.render('./admin_featured.ejs' , {featured: current, details:details, old : old});
                     }
                 });
-
-                //res.render('./admin_featured.ejs' , {featured: current, details:rows2, old : old});
             }
         });    
     },
