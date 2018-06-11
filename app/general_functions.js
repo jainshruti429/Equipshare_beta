@@ -161,8 +161,8 @@ module.exports = {
                 var request; //for the option of request...
                 if(isLoggedIn(req,res)){
                     var viewer = req.session.user;
-                    if (viewer == rows[0].owner_id) request = 0; //if one views details of his own equipment
-                    if(!req.session.category) request = 1
+                    if (viewer == rows[0].owner_id) {request = 0;} //if one views details of his own equipment
+                    else if(!req.session.category) {request = 1}
                     else{
                         request =1;
                         connection.query("SELECT * FROM views WHERE equip_id = ? AND viewer_id = ?",[req.params.id, viewer],function(err2, row2){
@@ -175,7 +175,8 @@ module.exports = {
                         });
                     }
                 }
-                else request = 1; 
+                else {request = 1;}
+                
                 connection.query("SELECT * FROM equipment_type WHERE type_id = ?" ,[rows[0].type_id], function(err4, rows4){
                     if(err4) throw err4;
                     else res.render('./user_view.ejs', {equip_data : rows, featured:index_featured, tech_info : rows4[0], request:request , isLoggedIn : isLoggedIn(req,res), username: req.session.name});                            
