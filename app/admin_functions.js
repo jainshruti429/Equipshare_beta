@@ -52,10 +52,31 @@ module.exports = {
                 connection.query(str2, [current[0].owner_id,current[1].owner_id,current[2].owner_id] , function(err2,rows2){
                     if(err2) throw err2;
                     else{
-                        //yaha se karna h
                         var details = [];
-                        if(rows2.length == 3) details
-                        res.send(rows2);
+                        if(rows2.length == 3) details = rows2;
+                        if(rows2.length == 1){
+                            for(var i = 0 ; i < 3 ; i++){
+                                details[i] = rows2[0];
+                            }
+                        } 
+                        else{
+                            if(current[0].owner_id == current[1].owner_id){
+                                details[0] = rows2[0];
+                                details[1] = rows2[0];
+                                details[2] = rows2[1];
+                            }
+                            if(current[1].owner_id == current[2].owner_id){
+                                details[0] = rows2[0];
+                                details[1] = rows2[1];
+                                details[2] = rows2[1];   
+                            }
+                            if(current[0].owner_id == current[2].owner_id){
+                                details[0] = rows2[0];
+                                details[1] = rows2[1];
+                                details[2] = rows2[0];   
+                            }
+                        }
+                        res.send(details);
                     }
                 });
 
