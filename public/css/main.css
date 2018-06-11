@@ -907,13 +907,13 @@ xcustom form elements
     min-height: 100%!important;
 }
 .custom-image-verify {
-    width: 280px!important;
+    /*width: 280px!important;*/
     height: 231px!important;
     overflow: hidden;
 }
 .custom-image-verify img {
-    min-width: 100%;
-    /*min-height: 100%;*/
+    /*min-width: 100%;*/
+    min-height: 100%;
 }
 /******************************TABLE CSS*****************************/
 
