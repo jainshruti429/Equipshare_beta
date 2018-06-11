@@ -88,7 +88,7 @@ module.exports = function(app, passport) {
  // all are checking that the user is first logged in and then that he is of the right category that the request belong to.
     app.get('/user_request:id&:owner_id', general_functions.isLoggedInfunc, user_functions.request_this);
     app.get('/user_reset_password', general_functions.isLoggedInfunc, user_functions.get_reset_password);
-    app.post('/user_reset_password', general_functions.isLoggedInfunc, user_functions.post_reset_password, general_functions.index);
+    app.post('/user_reset_password', general_functions.isLoggedInfunc, user_functions.post_reset_password, user_functions.get_reset_password);
     app.get('/user_update_equipment:id',general_functions.isLoggedInfunc, user_functions.get_update_this_equipment);
     app.post('/user_update_equipment:id', general_functions.isLoggedInfunc, user_functions.post_update_this_equipment);
     app.get('/user_my_equipment', general_functions.isLoggedInfunc,user_functions.my_equipment);
@@ -131,10 +131,14 @@ module.exports = function(app, passport) {
  // all are checking that the user is first logged in and then that he is of the right category that the request belong to.
     app.get('/admin_featured', general_functions.isLoggedInfunc, admin_access, admin_functions.featured);
     app.get('/admin_my_equipment', general_functions.isLoggedInfunc,admin_access,admin_functions.my_equipment);
-    app.get('/admin_view_equipment', general_functions.isLoggedInfunc,admin_access, admin_functions.view_equipment);
     
-    app.get('/admin_remove_featured:id',general_functions.isLoggedInfunc,admin_access,admin_functions.remove_featured);
+    app.get('/admin_remove_featured:id',general_functions.isLoggedInfunc,admin_access,admin_functions.remove_featured, admin_functions.featured);
+    app.get('/admin_view_details:id', general_functions.isLoggedInfunc,admin_access, user_functions.request_this);
+    
+
+
     app.get('/admin_add_featured',general_functions.isLoggedInfunc,admin_access,admin_functions.get_add_featured);
+    app.get('/admin_view_equipment', general_functions.isLoggedInfunc,admin_access, admin_functions.view_equipment); 
     app.get('/admin_add_featured:id',general_functions.isLoggedInfunc,admin_access,admin_functions.post_add_featured);
     app.get('/admin_add_new_admin', general_functions.isLoggedInfunc, admin_access, admin_functions.get_add_new_admin);
     app.post('/admin_add_new_admin', general_functions.isLoggedInfunc, admin_access, admin_functions.post_add_new_admin);

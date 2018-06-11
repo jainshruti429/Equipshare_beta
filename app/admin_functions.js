@@ -83,7 +83,7 @@ module.exports = {
         });    
     },
 
-    remove_featured: function(req,res){
+    remove_featured: function(req,res,next){
         var today = new Date();
         var dd = today.getDate();
         var mm = today.getMonth()+1; //January is 0!
@@ -97,7 +97,7 @@ module.exports = {
             else{
                 connection.query("SELECT * FROM featured WHERE display = 1", function(err,rows){
                     if(err) throw err;
-                    else res.render('./Profiles/admin/featured.ejs' , {datarows: rows});
+                    else res.next();
                 });    
             }
         });
@@ -147,7 +147,7 @@ module.exports = {
     get_add_featured: function(req,res){
         connection.query("SELECT * FROM all_equipment WHERE available = 1", function(err, rows){
             if (err) throw err;
-            else res.render('./Profiles/admin/add_featured.ejs',{datarows:rows});
+            else res.render('./admin_add_featured.ejs',{datarows:rows});
         });
     },
 
@@ -178,9 +178,9 @@ module.exports = {
     },
 
     my_equipment: function(req , res){
-        connection.query("SELECT * FROM all_equipment WHERE owner_id = ?" ,[req.session.user],function(err,rows){
+        connection.query("SELECT subcategory,brand,model,expected_price,owner_name,state     FROM all_equipment WHERE owner_id = ?" ,[req.session.user],function(err,rows){
             if (err) throw err ; 
-            else res.render('./Profiles/user/my_equipment.ejs' , {datarows: rows});
+            else res.render('./admin_my_equipment.ejs' , {datarows: rows});
         });
     },
 
@@ -228,7 +228,7 @@ module.exports = {
     },
 
     home:function(req, res) {
-        res.render('./Profiles/admin/homepage.ejs', {msg:('Welcome'+req.session.name)});
+        res.render('./admin_index.ejs', {msg:('Welcome'+req.session.name)});
     },
     
     get_add_equipment_type : function(req,res){
@@ -309,35 +309,6 @@ module.exports = {
         });
     },
 
-    get_add_equipment: function(req,res){
-        connection.query("SELECT DISTINCT subcategory FROM equipment_type WHERE category = ?",[cat_rows[0].category], function(err1, subcat_rows){
-            if (err1) throw err1;
-            else{
-                connection.query("SELECT brand FROM equipment_type WHERE subcategory = ? AND category = ?",[subcat_rows[0].subcategory ,cat_rows[0].category], function(err2, brand_rows){    
-                    if (err2) throw err2;
-                    else{
-                        connection.query("SELECT model FROM equipment_type WHERE brand = ? AND subcategory = ? AND category = ?", [brand_rows[0].brand, subcat_rows[0].subcategory ,cat_rows[0].category],function(err3, model_rows){
-                            if(err3) throw err3;
-                            else{
-                                var data ={
-                                    brand : '',
-                                    model : '',
-                                    varient : '',
-                                    colour : '',
-                                    year: 0,
-                                    km : 0,
-                                    state: '',
-                                    expected_price: 0,
-                                    description: ''
-                                };
-                                res.render('./user_add_equipment.ejs', {msg : 'Please enter the following details',data:data, cat_rows:cat_rows, name_rows:name_rows, brand_rows:brand_rows, model_rows:model_rows, cat_selected: '', subcat_selected : '', brand_selected : ''});          
-                            }
-                        });
-                    }
-                });                          
-            }
-        });
-    },
 
     get_update_profile:  function(req, res){
         connection.query("SELECT * FROM account WHERE id = ?" ,[req.session.user],function(err,rows){
@@ -359,132 +330,145 @@ module.exports = {
         });
     },
 
-    post_add_equipment_category: function(req,res){
-        connection.query("SELECT DISTINCT subcategory FROM equipment_type WHERE category = ?",[req.body.category], function(err1, subcat_rows){
+    get_add_equipment: function(req,res){
+        if(req.session.msg) {
+                    msg = req.session.msg;
+                    req.session.msg = '';
+        }
+        else msg = 'Please enter the following details';
+        connection.query("SELECT DISTINCT subcategory FROM equipment_type WHERE category = ?",[cat_rows[0].category], function(err1, subcat_rows){
             if (err1) throw err1;
-            else{
-                connection.query("SELECT brand FROM equipment_type WHERE subcategory = ? AND category = ?",[subcat_rows[0].subcategory ,req.body.category], function(err2, brand_rows){    
-                    if (err2) throw err2;
-                    else{
-                        connection.query("SELECT model FROM equipment_type WHERE brand = ? AND subcategory = ? AND category = ?", [brand_rows[0].brand, subcat_rows[0].category ,req.body.category],function(err3, model_rows){
-                            if(err3) throw err3;
-                            else{
-                                var data ={
-                                    brand : '',
-                                    model : '',
-                                    colour : '',
-                                    year: 0,
-                                    km : 0,
-                                    state: '',
-                                    expected_price: 0,
-                                    description: ''
-                                };
-                                res.render('./user_add_equipment.ejs', {msg : 'Please enter the following details',data:data, cat_rows:cat_rows, subcat_rows:subcat_rows, brand_rows:brand_rows, model_rows:model_rows, cat_selected: req.body.category , subcat_selected : '', brand_selected : ''});          
-                            }
-                        });
-                    }
-                });                          
-            }
+            else res.render('./user_add_equipment.ejs', {msg : msg, cat_rows:cat_rows, isLoggedIn : isLoggedIn(req,res), username: req.session.name});                             
         });
     },
 
-    post_add_equipment_subcategory: function(req,res){
-        connection.query("SELECT DISTINCT subcategory FROM equipment_type WHERE category = ?",[req.body.category], function(err1, subcat_rows){
-            if (err1) throw err1;
-            else{
-                connection.query("SELECT brand FROM equipment_type WHERE category = ? AND category = ?",[req.body.category ,req.body.category], function(err2, brand_rows){    
-                    if (err2) throw err2;
-                    else{
-                        connection.query("SELECT model FROM equipment_type WHERE brand = ? AND subcategory = ? AND category = ?", [brand_rows[0].brand, req.body.subcategory ,req.body.category],function(err3, model_rows){
-                            if(err3) throw err3;
-                            else{
-                                var data ={
-                                    brand : '',
-                                    model : '',
-                                    colour : '',
-                                    year: 0,
-                                    km : 0,
-                                    state: '',
-                                    expected_price: 0,
-                                    description: ''
-                                };
-                                res.render('./admin_add_equipment.ejs', {msg : 'Please enter the following details',data:data, cat_rows:cat_rows, subcat_rows:subcat_rows, brand_rows:brand_rows, model_rows:model_rows, cat_selected: req.body.category , subcat_selected : req.body.subcategory, brand_selected : ''});          
-                            }
-                        });
-                    }
-                });                          
-            }
-        });
+    get_add_equipment_category: function(req,res){
+        var cat_selected = req.query.category;
+        var sql="SELECT DISTINCT subcategory FROM equipment_type WHERE category = ?";
+        connection.query(sql, [cat_selected], function(err,result){
+            if(err){res.end('error');}
+            else{ 
+                res.send(result);
+            } 
+        }); 
     },
 
-    post_add_equipment_brand: function(req,res){
-        connection.query("SELECT DISTINCT subcategory FROM equipment_type WHERE category = ?",[req.body.category], function(err1, subcat_rows){
-            if (err1) throw err1;
-            else{
-                connection.query("SELECT brand FROM equipment_type WHERE subcategory = ? AND category = ?",[req.body.subcategory ,req.body.category], function(err2, brand_rows){    
-                    if (err2) throw err2;
-                    else{
-                        connection.query("SELECT model FROM equipment_type WHERE brand = ? AND subcategory = ? AND category = ?", [req.body.brand, req.body.subcategory ,req.body.category],function(err3, model_rows){
-                            if(err3) throw err3;
-                            else{
-                                var data ={
-                                    brand : '',
-                                    model : '',
-                                    colour : '',
-                                    year: 0,
-                                    km : 0,
-                                    state: '',
-                                    expected_price: 0,
-                                    description: ''
-                                };
-                                res.render('.admin_add_equipment.ejs', {msg : 'Please enter the following details',data:data, cat_rows:cat_rows, subcat_rows:subcat_rows, brand_rows:brand_rows, model_rows:model_rows, cat_selected: req.body.category , subcat_selected : req.body.subcategory, brand_selected : req.body.brand});          
-                            }
-                        });
-                    }
-                });                          
-            }
-        });
+    get_add_equipment_subcategory: function(req,res){
+        var cat_selected = req.query.category;
+        var subcat_selected = req.query.subcategory;
+        var sql="SELECT DISTINCT brand FROM equipment_type WHERE category = ? AND subcategory= ?";
+        connection.query(sql, [cat_selected, subcat_selected], function(err,result){
+             if(err){res.end('error');}
+            else{ 
+                res.send(result);} 
+        }); 
     },
 
-    post_add_equipment: function( req, res ){
+    get_add_equipment_brand: function(req,res){
+        var brand_selected = req.query.brand;
+        var cat_selected = req.query.category;
+        var subcat_selected = req.query.subcategory;
+        var sql="SELECT DISTINCT model FROM equipment_type WHERE category = ? AND subcategory= ? AND brand= ?";
+        connection.query(sql, [cat_selected, subcat_selected, brand_selected], function(err,result){
+             if(err){res.end('error');}
+            else{ 
+                res.send(result);} 
+        }); 
+    },
+
+    post_add_equipment: function(req, res, next){
         var name = {
-                    category : req.body.category,   
+                    category : req.body.category,
+                    subcategory : req.body.subcategory,   
                     brand: req.body.brand,
                     model: req.body.model,
                     expected_price: req.body.expected_price,
                     year: req.body.year,
                     colour: req.body.colour,
-                    subcategory: req.body.subcategory,
                     description: req.body.description,
-                    km: req.body.km,
-                    state : req.body.state,
-                    available : 1
-        };       
-        var owner_id = req.session.user; 
-        connection.query("SELECT name, address, city FROM account WHERE id = ?", [owner_id], function(err,rows){
-            if (err) throw err;
-            else {
-                var owner_name = rows[0].name;
-                var locality = rows[0].address;
-                var city = rows[0].city;
-                var photo1 = req.files.photo1;
-                var photo1name = photo1.name;
-                var result = photo1name.split('.');
-                var img_name = req.session.user+'_1.'+result.slice(-1) ;
-                console.log(img_name);
-                photo1.mv('images/'+img_name, function(err3){           
-                    if (err3) throw(err3);
-                    else{
-                        var insertQuery = "INSERT INTO all_equipment (state,photo1,available,category, brand, model, expected_price, year, colour, city, locality,subcategory, description, km, owner_name, owner_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-                        connection.query(insertQuery, [name.state,img_name, name.available, name.category,name.brand, name.model, name.expected_price, name.year, name.colour, city, locality, name.subcategory, name.description,name.km,owner_name,owner_id],function(err4){
-                            if (err4) throw err4;
-                            else res.render('./admin/home.ejs',{msg : 'Equipment Added Successfully'});
+                    km: req.body.km,                 
+                    available : 1,
+                    type_id : 0,
+                    owner_id: req.session.user,
+                    city:'',
+                    state:''
+        };   
+        connection.query("SELECT type_id FROM equipment_type WHERE category = ? AND subcategory = ? AND brand = ? AND model = ?", [name.category, name.subcategory, name.brand, name.model], function(err, rows){
+            if(err) throw err;
+            else { 
+                name.type_id = rows[0].type_id;       
+                connection.query("SELECT name, city, state FROM account WHERE id = ?", [name.owner_id], function(err,rows){
+                    if (err) throw err;
+                    else {
+                        name.city = rows[0].city;
+                        name.state = rows[0].state;
+
+                var radicle = '';
+                connection.query("SELECT id FROM all_equipment ORDER BY id ASC", function(err,rows){
+                    if(err) throw err;
+                    else {
+                        if(rows.length) radicle = rows.slice(-1)[0].id + 1;
+                        else radicle = 1;
+                        
+                var photo = [];
+                var photoname = [];
+                var resultp = [];
+                var photo_name = [];
+                
+                photo[1] = req.files.photo1;
+                photo[2] = req.files.photo2;
+                photo[3] = req.files.photo3;
+                photo[4] = req.files.photo4;
+
+                for(var i = 1; i<5 ; i++){
+                        photoname[i] = photo[i].name;
+                        resultp[i] = photoname[i].split('.');
+                        photo_name[i] = radicle+'_'+i+'.'+resultp[i].slice(-1) ;
+                        photo[i].mv('images/'+photo_name[i], function(err3){           
+                            if (err3) throw(err3);
+                        });
+                }
+
+                var doc = [];
+                var docname = [];
+                var resultd = [];
+                var doc_name = [];
+
+                doc[1] = req.files.doc1;
+                doc[2] = req.files.doc2;
+                doc[3] = req.files.doc3;
+                doc[4] = req.files.doc4;
+                doc[5] = req.files.doc5;
+                doc[6] = req.files.doc6;
+
+                for(var i = 1; i<7 ; i++){
+                    if(doc[i]){
+                        docname[i] = doc[i].name;
+                        resultd[i] = docname[i].split('.');
+                        doc_name[i] = radicle+'_'+i+'.'+resultd[i].slice(-1) ;
+                        doc[i].mv('docs/'+doc_name[i] , function(err3){           
+                            if (err3) throw(err3);
                         });
                     }
+                    else doc_name[i] = '';
+                }
+
+                var insertQuery = "INSERT INTO all_equipment ( photo1, photo2, photo3, photo4, doc1, doc2, doc3, doc4, doc5, doc6 ,type_id,state,available, category , brand, model, expected_price, year, colour, city, subcategory, description, km, owner_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                connection.query(insertQuery, [photo_name[1],photo_name[2],photo_name[3],photo_name[4],doc_name[1],doc_name[2],doc_name[3],doc_name[4],doc_name[5],doc_name[6],name.type_id, name.state, name.available, name.category,name.brand, name.model, name.expected_price, name.year, name.colour, name.city, name.subcategory, name.description,name.km,name.owner_id],function (err4, resulti){
+                    if (err4) throw err4;
+                    else {
+                        req.session.msg = "Your equipment is added successfully...";
+                        return next();
+                    }
+                });
+
+                    }
+                });
+                    }
                 }); 
-            } 
-        });
-    },
+            }
+        });        
+    }   
 
     
 }

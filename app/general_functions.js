@@ -50,14 +50,17 @@ module.exports = {
 
     index: function(req, res) {
             var username;
-                if(req.session) username = req.session.name;
-                else username = '';
-                
-                if(req.session.msg) {
-                    msg = req.session.msg;
-                    req.session.msg = '';
+            var msg;
+                if(req.session) {
+                    username = req.session.name;
+                    if(req.session.msg) {
+                        msg = req.session.msg;
+                        req.session.msg = '';
+                    }
+                    else msg = '';    
                 }
-                else msg = '';
+                else username = '';
+                                
         if(index_cat.length){
             connection.query("SELECT DISTINCT subcategory FROM equipment_type WHERE category = ?",[index_cat[0].category], function(err2, rows2){
                 if(err2) throw err2;
