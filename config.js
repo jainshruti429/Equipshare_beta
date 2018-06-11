@@ -6,7 +6,7 @@
 // variables, and files.
 const nconf = module.exports = require('nconf');
 const path = require('path');
-
+var db = require("./config/database")
 
 
 nconf
@@ -40,8 +40,8 @@ nconf
     // MongoDB connection string
     // https://docs.mongodb.org/manual/reference/connection-string/
 
-    MYSQL_USER: 'root',
-    MYSQL_PASSWORD: 'root@SQL1',
+    MYSQL_USER: db.user,
+    MYSQL_PASSWORD: db.password,
 
     INSTANCE_CONNECTION_NAME: 'auctioning-192405:asia-south1:auctionapp'
   });
