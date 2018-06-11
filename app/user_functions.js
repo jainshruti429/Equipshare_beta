@@ -27,9 +27,9 @@ var others = require('./others');
 var general_functions = require("./general_functions");
 
 //general check if category is user or dealer
-var user_access = function access(req,res,next){
-    if(req.session.category==1) return next();
-    return res.render("error.ejs");
+var user_access = function access(req,res){
+    if(req.session.category==1) return 1;
+    else return 0;
 } 
 
 var isLoggedIn = function(req, res) {  
@@ -146,19 +146,72 @@ module.exports =  {
     get_update_this_equipment: function(req, res){
     connection.query("SELECT * FROM all_equipment WHERE id = ?" ,[req.params.id],function(err,rows){
             if (err) throw err;
-            else res.render('./update.ejs' , {equip_data : rows[0], isLoggedIn : isLoggedIn(req,res), username: req.session.name});
+            else res.render('./user_update_equipment.ejs' , {equip_data : rows[0], isLoggedIn : isLoggedIn(req,res), username: req.session.name});
         });
     },
     
-    post_update_this_equipment: function(req, res){
-         var updateQuery = "UPDATE all_equipment SET brand =?, model=?, expected_price=?, year=?, colour=?, subcategory=?, description=?, km=? WHERE id =?";
-                connection.query(updateQuery, [req.body.brand, req.body.model, req.body.varient, req.body.expected_price, req.body.year, req.body.colour, req.body.subcategory, req.body.description,req.body.km, req.params.id],function (err, rows) {
-                    if (err) throw err;
+    post_update_this_equipment: function(req, res, next){
+        connection.query("SELECT photo1,photo2,photo3,photo4,doc_invoice,doc_insurance,doc_fitness,doc_rc,doc_poc,doc_roadtax FROM all_equipment WHERE id = ?", [req.params.id],function (err, rows) {
+            if (err) throw err;
+            else {
+                var radicle = req.params.id;     
+                var photo = [];
+                var photoname = [];
+                var resultp = [];
+                var photo_name = [];
+                
+                photo[1] = req.files.photo1;
+                photo[2] = req.files.photo2;
+                photo[3] = req.files.photo3;
+                photo[4] = req.files.photo4;
+                var photovals = [rows[0].photo1, rows[0].photo2, rows[0].photo3,rows[0].photo4 ];
+
+                for(var i = 1; i<5 ; i++){
+                    if(photo[i]){
+                        photoname[i] = photo[i].name;
+                        resultp[i] = photoname[i].split('.');
+                        photo_name[i] = radicle+'_'+i+'.'+resultp[i].slice(-1) ;
+                        photo[i].mv('images/'+photo_name[i], function(err3){           
+                            if (err3) throw(err3);
+                        });
+                    }
+                    else photo_name[i] = photovals[i];
+                }
+
+                var doc = [];
+                var docname = [];
+                var resultd = [];
+                var doc_name = [];
+                var docvals = [rows[0].doc_invoice, rows[0].doc_insurance, rows[0].doc_fitness, rows[0].doc_rc, rows[0].doc_poc, rows[0].doc_roadtax];
+
+                doc[1] = req.files.doc_invoice;
+                doc[2] = req.files.doc_insurance;
+                doc[3] = req.files.doc_fitness;
+                doc[4] = req.files.doc_rc;
+                doc[5] = req.files.doc_poc;
+                doc[6] = req.files.doc_roadtax;
+
+                for(var i = 1; i<7 ; i++){
+                    if(doc[i]){
+                        docname[i] = doc[i].name;
+                        resultd[i] = docname[i].split('.');
+                        doc_name[i] = radicle+'_'+i+'.'+resultd[i].slice(-1) ;
+                        doc[i].mv('docs/'+doc_name[i] , function(err3){           
+                            if (err3) throw(err3);
+                        });
+                    }
+                    else doc_name[i] = docvals[i];
+                } 
+                    var insertQuery = "UPDATE all_equipment SET expected_price=?, km=?, description=? ,photo1 = ? , photo2 = ?, photo3 = ?, photo4 = ?, doc_invoice = ?, doc_insurance= ?, doc_fitness=?, doc_rc=?, doc_poc=?, doc_roadtax=? WHERE id = ?";
+                    connection.query(insertQuery, [req.body.expected_price, req.body.km, req.body.description, photo_name[1],photo_name[2],photo_name[3],photo_name[4],doc_name[1],doc_name[2],doc_name[3],doc_name[4],doc_name[5],doc_name[6],req.params.id],function (err4, resulti){
+                    if (err4) throw err4;
                     else {
-                        var msg= 'Equipment Updated';
-                        return res.render('./user_index.ejs',{msg : msg, isLoggedIn : isLoggedIn(req,res), username: req.session.name});
-                        }
+                        req.session.msg = "Your equipment is added successfully...";
+                        return next();
+                    }
                 });
+            }
+        });
 
     },
 
@@ -281,12 +334,12 @@ module.exports =  {
 		        var resultd = [];
 		        var doc_name = [];
 
-		        doc[1] = req.files.doc1;
-		        doc[2] = req.files.doc2;
-		        doc[3] = req.files.doc3;
-		        doc[4] = req.files.doc4;
-		        doc[5] = req.files.doc5;
-		        doc[6] = req.files.doc6;
+		        doc[1] = req.files.doc_invoice;
+                doc[2] = req.files.doc_insurance;
+                doc[3] = req.files.doc_fitness;
+                doc[4] = req.files.doc_rc;
+                doc[5] = req.files.doc_poc;
+                doc[6] = req.files.doc_roadtax;
 
 		        for(var i = 1; i<7 ; i++){
 		        	if(doc[i]){
@@ -300,7 +353,7 @@ module.exports =  {
 		           	else doc_name[i] = '';
 		        }
 
-		        var insertQuery = "INSERT INTO all_equipment ( photo1, photo2, photo3, photo4, doc1, doc2, doc3, doc4, doc5, doc6 ,type_id,state,available, category , brand, model, expected_price, year, colour, city, subcategory, description, km, owner_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		        var insertQuery = "INSERT INTO all_equipment ( photo1, photo2, photo3, photo4, doc_invoice, doc_insurance, doc_fitness, doc_rc, doc_poc, doc_roadtax ,type_id,state,available, category , brand, model, expected_price, year, colour, city, subcategory, description, km, owner_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		        connection.query(insertQuery, [photo_name[1],photo_name[2],photo_name[3],photo_name[4],doc_name[1],doc_name[2],doc_name[3],doc_name[4],doc_name[5],doc_name[6],name.type_id, name.state, name.available, name.category,name.brand, name.model, name.expected_price, name.year, name.colour, name.city, name.subcategory, name.description,name.km,name.owner_id],function (err4, resulti){
 		            if (err4) throw err4;
 		            else {

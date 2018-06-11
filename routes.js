@@ -90,7 +90,7 @@ module.exports = function(app, passport) {
     app.get('/user_reset_password', general_functions.isLoggedInfunc, user_functions.get_reset_password);
     app.post('/user_reset_password', general_functions.isLoggedInfunc, user_functions.post_reset_password, user_functions.get_reset_password);
     app.get('/user_update_equipment:id',general_functions.isLoggedInfunc, user_functions.get_update_this_equipment);
-    app.post('/user_update_equipment:id', general_functions.isLoggedInfunc, user_functions.post_update_this_equipment);
+    app.post('/user_update_equipment:id', general_functions.isLoggedInfunc, user_functions.post_update_this_equipment, general_functions.view);
     app.get('/user_my_equipment', general_functions.isLoggedInfunc,user_functions.my_equipment);
     app.get('/user_view_equipment', general_functions.isLoggedInfunc, user_functions.view_equipment);
     app.get('/user_add_equipment',general_functions.isLoggedInfunc, user_functions.check_profile, user_functions.get_add_equipment);
@@ -100,7 +100,6 @@ module.exports = function(app, passport) {
     app.post('/user_add_equipment', general_functions.isLoggedInfunc, user_functions.post_add_equipment, user_functions.get_add_equipment);
     app.get('/user_update_profile',general_functions.isLoggedInfunc, user_functions.get_update_profile);
     app.post('/user_update_profile', general_functions.isLoggedInfunc, user_functions.post_update_profile);
-
     app.get('/user_logout',general_functions.isLoggedInfunc, general_functions.logoutfunc, general_functions.index);
     
 
@@ -135,8 +134,6 @@ module.exports = function(app, passport) {
     app.get('/admin_remove_featured:id',general_functions.isLoggedInfunc,admin_access,admin_functions.remove_featured, admin_functions.featured);
     app.get('/admin_view_details:id', general_functions.isLoggedInfunc,admin_access, user_functions.request_this);
     
-
-
     app.get('/admin_add_featured',general_functions.isLoggedInfunc,admin_access,admin_functions.get_add_featured);
     app.get('/admin_view_equipment', general_functions.isLoggedInfunc,admin_access, admin_functions.view_equipment); 
     app.get('/admin_add_featured:id',general_functions.isLoggedInfunc,admin_access,admin_functions.post_add_featured);
