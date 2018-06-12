@@ -129,19 +129,30 @@ module.exports = function(app, passport) {
 
  // all are checking that the user is first logged in and then that he is of the right category that the request belong to.
     app.get('/admin_inquiry', general_functions.isLoggedInfunc, admin_access, admin_functions.inquiry);
-    app.get('/admin_resolved', general_functions.isLoggedInfunc, admin_access, admin_functions.resolved, admin_functions.inquiry);
-
-
-    
+    app.get('/admin_resolved:sno', general_functions.isLoggedInfunc, admin_access, admin_functions.resolved, admin_functions.inquiry);
+    app.post('/admin_comment:sno', general_functions.isLoggedInfunc, admin_access, admin_functions.comment, admin_functions.inquiry);
     app.get('/admin_featured', general_functions.isLoggedInfunc, admin_access, admin_functions.featured);
-    app.get('/admin_my_equipment', general_functions.isLoggedInfunc,admin_access,admin_functions.my_equipment);
-    
-    app.get('/admin_remove_featured:id',general_functions.isLoggedInfunc,admin_access,admin_functions.remove_featured, admin_functions.featured);
     app.get('/admin_view_details:id', general_functions.isLoggedInfunc,admin_access, user_functions.request_this);
-    
+    app.get('/admin_remove_featured:id',general_functions.isLoggedInfunc,admin_access,admin_functions.remove_featured, admin_functions.featured);
     app.get('/admin_add_featured',general_functions.isLoggedInfunc,admin_access,admin_functions.get_add_featured);
+    
+    app.post('/admin_add_featured:id',general_functions.isLoggedInfunc,admin_access,function(req,res,next){
+        connection.query('SELECT * FROM featured WHERE equip_id=?',[req.params.id],function(err1,rows1){
+            if(err1) throw err1;
+            else if(rows1.length) admin_functions.get_add_featured(req,res);
+            else next();
+        });
+    }, admin_functions.post_add_featured, function(req,res,next){
+        connection.query("SELECT equip_id FROM featured", function(err,rows){
+            if(err) throw err;
+            else if(rows.length == 3) admin_functions.featured(req,res);
+            else next();
+        });
+    }, admin_functions.get_add_featured);
+    
+
+    app.get('/admin_my_equipment', general_functions.isLoggedInfunc,admin_access,admin_functions.my_equipment);    
     app.get('/admin_view_equipment', general_functions.isLoggedInfunc,admin_access, admin_functions.view_equipment); 
-    app.get('/admin_add_featured:id',general_functions.isLoggedInfunc,admin_access,admin_functions.post_add_featured);
     app.get('/admin_add_new_admin', general_functions.isLoggedInfunc, admin_access, admin_functions.get_add_new_admin);
     app.post('/admin_add_new_admin', general_functions.isLoggedInfunc, admin_access, admin_functions.post_add_new_admin);
     app.get('/admin_homepage', general_functions.isLoggedInfunc, admin_access, admin_functions.home);
