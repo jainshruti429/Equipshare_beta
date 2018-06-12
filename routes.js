@@ -157,6 +157,7 @@ module.exports = function(app, passport) {
     app.get('/admin_inquiry', general_functions.isLoggedInfunc, admin_access, admin_functions.inquiry);
     app.get('/admin_resolved', general_functions.isLoggedInfunc, admin_access, admin_functions.resolved, admin_functions.inquiry);
 
+    
     app.get('/admin_user_view', general_functions.isLoggedInfunc, admin_access, general_functions.index);
     app.get('/admin_logout',general_functions.isLoggedInfunc,admin_access, general_functions.logoutfunc);
 };
