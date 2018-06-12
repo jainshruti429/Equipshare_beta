@@ -175,7 +175,7 @@ module.exports =  {
                             if (err3) throw(err3);
                         });
                     }
-                    else photo_name[i] = photovals[i];
+                    else photo_name[i] = photovals[i-1];
                 }
 
                 var doc = [];
@@ -200,7 +200,7 @@ module.exports =  {
                             if (err3) throw(err3);
                         });
                     }
-                    else doc_name[i] = docvals[i];
+                    else doc_name[i] = docvals[i-1];
                 } 
                     var insertQuery = "UPDATE all_equipment SET expected_price=?, km=?, description=? ,photo1 = ? , photo2 = ?, photo3 = ?, photo4 = ?, doc_invoice = ?, doc_insurance= ?, doc_fitness=?, doc_rc=?, doc_poc=?, doc_roadtax=? WHERE id = ?";
                     connection.query(insertQuery, [req.body.expected_price, req.body.km, req.body.description, photo_name[1],photo_name[2],photo_name[3],photo_name[4],doc_name[1],doc_name[2],doc_name[3],doc_name[4],doc_name[5],doc_name[6],req.params.id],function (err4, resulti){
