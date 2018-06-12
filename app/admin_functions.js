@@ -270,7 +270,7 @@ module.exports = {
             if(err) throw err;
             else return next();
         });
-    }
+    },
 
     get_add_new_admin: function(req,res){
     	res.render('./Profiles/admin/add_new_admin.ejs', {msg: 'Enter the following details' });

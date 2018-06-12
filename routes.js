@@ -128,6 +128,9 @@ module.exports = function(app, passport) {
     });
 
  // all are checking that the user is first logged in and then that he is of the right category that the request belong to.
+    app.get('/admin', general_functions.isLoggedInfunc, admin_access, function(req,res){
+        res.render('./admin_index.ejs', {msg:('Welcome '+req.session.name), username:req.session.name});
+    });
     app.get('/admin_inquiry', general_functions.isLoggedInfunc, admin_access, admin_functions.inquiry);
     app.get('/admin_resolved:sno', general_functions.isLoggedInfunc, admin_access, admin_functions.resolved, admin_functions.inquiry);
     app.post('/admin_comment:sno', general_functions.isLoggedInfunc, admin_access, admin_functions.comment, admin_functions.inquiry);
