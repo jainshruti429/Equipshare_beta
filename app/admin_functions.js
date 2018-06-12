@@ -187,7 +187,7 @@ module.exports = {
     inquiry : function(req, res){
         connection.query("SELECT * FROM emails WHERE resolved = 0",function(err,rows){
             if(err) throw err;
-            else res.render('./admin/inquiry.ejs',{datarows:rows});
+            else res.render('./admin_inquiry.ejs',{datarows:rows});
         });
     },
 

@@ -128,6 +128,11 @@ module.exports = function(app, passport) {
     });
 
  // all are checking that the user is first logged in and then that he is of the right category that the request belong to.
+    app.get('/admin_inquiry', general_functions.isLoggedInfunc, admin_access, admin_functions.inquiry);
+    app.get('/admin_resolved', general_functions.isLoggedInfunc, admin_access, admin_functions.resolved, admin_functions.inquiry);
+
+
+    
     app.get('/admin_featured', general_functions.isLoggedInfunc, admin_access, admin_functions.featured);
     app.get('/admin_my_equipment', general_functions.isLoggedInfunc,admin_access,admin_functions.my_equipment);
     
@@ -154,9 +159,6 @@ module.exports = function(app, passport) {
     app.post('/admin_add_equipment', general_functions.isLoggedInfunc,admin_access, admin_functions.post_add_equipment);
     app.get('/admin_update_profile',general_functions.isLoggedInfunc,admin_access, admin_functions.get_update_profile);
     app.post('/admin_update_profile', general_functions.isLoggedInfunc,admin_access, admin_functions.post_update_profile);
-    app.get('/admin_inquiry', general_functions.isLoggedInfunc, admin_access, admin_functions.inquiry);
-    app.get('/admin_resolved', general_functions.isLoggedInfunc, admin_access, admin_functions.resolved, admin_functions.inquiry);
-
     
     app.get('/admin_user_view', general_functions.isLoggedInfunc, admin_access, general_functions.index);
     app.get('/admin_logout',general_functions.isLoggedInfunc,admin_access, general_functions.logoutfunc);
