@@ -6,7 +6,7 @@
             <div class="container-fluid">
     <div class="row">
         
-      <?php include('sidebar.php'); ?>
+      <%- php include('sidebar.php'); %>
         <!--main content begin here-->
         <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12" style="padding:0">
         <div class="main-content">
