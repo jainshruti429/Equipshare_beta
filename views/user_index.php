@@ -1,4 +1,4 @@
-<?php include('header.php'); ?>
+<%- php include('header.php'); %>
     
     
     <!--side bar code here-->
@@ -7,7 +7,7 @@
             <div class="container-fluid">
     <div class="row">
         
-        <?php include('sidebar.php'); ?>
+        <%- php include('sidebar.php'); %>
         
         
         <!--main content begin here-->
