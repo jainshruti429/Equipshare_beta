@@ -40,11 +40,11 @@ module.exports = {
     //get_login and post_login in routes page...passport k pain tha
   
     feat_data : function(req,res,next){
-        str1 = "SELECT views.equip_id, count(views.equip_id) FROM views INNER JOIN featured ON featured.equip_id = views.equip_id WHERE featured.display = 1 GROUP BY views.equip_id";
+        str1 = "SELECT views.equip_id, count(views.equip_id) as no_views FROM views INNER JOIN featured ON featured.equip_id = views.equip_id WHERE featured.display = 1 GROUP BY views.equip_id";
         connection.query(str1, function(err1,rows1){
             if(err1) throw err1;
             else{
-                str2 = "SELECT requests.equip_id, count(requests.equip_id) FROM requests INNER JOIN featured ON featured.equip_id = requests.equip_id WHERE featured.display = 1 GROUP BY requests.equip_id";
+                str2 = "SELECT requests.equip_id, count(requests.equip_id) as no_requests FROM requests INNER JOIN featured ON featured.equip_id = requests.equip_id WHERE featured.display = 1 GROUP BY requests.equip_id";
                 connection.query(str2, function(err2,rows2){
                     if(err2) throw err2;
                     else{
@@ -56,7 +56,7 @@ module.exports = {
 
                             for(var j = 0 ; j <rows1.length; j++){
                                 if(featured[i].equip_id == rows1[j].equip_id){
-                                    feat_data[i].views = rows1[j].count(views.equip_id);
+                                    feat_data[i].views = rows1[j].no_views;
                                     break;
                                 }
                             }
@@ -64,7 +64,7 @@ module.exports = {
                             
                             for(var j = 0 ; j <rows2.length; j++){
                                 if(featured[i].equip_id == rows2[j].equip_id){
-                                    feat_data[i].requests = rows2[j].count(requests.equip_id);
+                                    feat_data[i].requests = rows2[j].no_requests;
                                     break;
                                 }
                             }
@@ -82,11 +82,11 @@ module.exports = {
         connection.query(str,function(err, rows){
             if (err) throw err;
             else{
-                var str = "SELECT views.equip_id, count(views.equip_id) FROM views INNER JOIN all_equipment ON all_equipment.id = views.equip_id WHERE all_equipment.available = 1 GROUP BY views.equip_id";
+                var str = "SELECT views.equip_id, count(views.equip_id) as no_views FROM views INNER JOIN all_equipment ON all_equipment.id = views.equip_id WHERE all_equipment.available = 1 GROUP BY views.equip_id";
                 connection.query(str, function(err1,rows1){
                     if(err1) throw err1;
                     else{
-                        str = "SELECT requests.equip_id, count(requests.equip_id) FROM requests INNER JOIN all_equipment ON all_equipment.id = requests.equip_id WHERE all_equipment.available = 1 GROUP BY requests.equip_id";
+                        str = "SELECT requests.equip_id, count(requests.equip_id) as no_requests FROM requests INNER JOIN all_equipment ON all_equipment.id = requests.equip_id WHERE all_equipment.available = 1 GROUP BY requests.equip_id";
                         connection.query(str, function(err2,rows2){
                             if(err2) throw err2;
                             else{
@@ -99,7 +99,7 @@ module.exports = {
 
                                     for(var j = 0 ; j <rows1.length; j++){
                                         if(rows[i].id == rows1[j].equip_id){
-                                            data[i].views = rows1[j].count(views.equip_id);
+                                            data[i].views = rows1[j].no_views;
                                             break;
                                         }
                                     }
@@ -107,7 +107,7 @@ module.exports = {
                                     
                                     for(var j = 0 ; j <rows2.length; j++){
                                         if(rows[i].id == rows2[j].equip_id){
-                                            data[i].requests = rows2[j].count(requests.equip_id);
+                                            data[i].requests = rows2[j].no_requests;
                                             break;
                                         }
                                     }
@@ -124,7 +124,7 @@ module.exports = {
     },
 
     featured_equip : function(req,res, next){
-        str1 = "SELECT featured.views, featured.start_date, featured.end_date, featured.display,all_equipment.photo1, all_equipment.expected_price, all_equipment.owner_id, all_equipment.subcategory, all_equipment.brand, all_equipment.model, all_equipment.id FROM all_equipment INNER JOIN featured ON featured.equip_id = all_equipment.id";
+        str1 = "SELECT featured.equip_id,featured.views, featured.start_date, featured.end_date, featured.display,all_equipment.photo1, all_equipment.expected_price, all_equipment.owner_id, all_equipment.subcategory, all_equipment.brand, all_equipment.model, all_equipment.id FROM all_equipment INNER JOIN featured ON featured.equip_id = all_equipment.id";
         connection.query(str1, function(err,rows){
             if(err) throw err;
             else{
@@ -140,8 +140,13 @@ module.exports = {
                         k++;
                     } 
                 }
-                str2 = "SELECT name, address1, address2, address3, city, state, zipcode, mobile FROM account WHERE id = ? OR id = ? OR id = ? ";
-                connection.query(str2, [featured[0].owner_id,featured[1].owner_id,featured[2].owner_id] , function(err2,rows2){
+                str = "SELECT name, address1, address2, address3, city, state, zipcode, mobile FROM account WHERE id IN (";
+                for(var i = 0; i <featured.length; i++){
+                    str = str + featured[i].owner_id + ",";
+                }
+                str = str.slice(0,-1);
+                str = str +")";
+                connection.query(str, function(err2,rows2){
                     if(err2) throw err2;
                     else{
                         if(rows2.length == featured.length) details = rows2;
@@ -189,7 +194,7 @@ module.exports = {
 
         connection.query("UPDATE featured SET display = 0, end_date =? WHERE equip_id = ?",[today,req.params.id],function(err){
             if(err) throw err;
-            else res.next();
+            else next();
         });
     },
 
@@ -261,8 +266,6 @@ module.exports = {
                 });
 
     },
-
-    
 
     my_equipment: function(req , res){
         connection.query("SELECT subcategory,brand,model,expected_price,owner_name,state     FROM all_equipment WHERE owner_id = ?" ,[req.session.user],function(err,rows){

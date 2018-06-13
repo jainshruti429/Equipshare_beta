@@ -57,28 +57,28 @@ module.exports =  {
     //get_login and post_login: in routes page...passport k pain tha
     //need to change because of popup
     request_this: function(req,res){
-        connection.query("SELECT name, mobile, email, address1,address2,address3, city, state, zipcode  FROM account WHERE id = ?",[req.params.owner_id],function(err1,rows1){
-            if (err1) throw err1 ;
-            else{
-                if(user_access){
-                    var applicant_id = req.session.user;
-                    if (applicant_id != req.params.owner_id){    
-                        connection.query("SELECT * FROM requests WHERE equip_id = ? AND applicant_id = ?",[req.params.id, applicant_id],function(err2, row2){
-                            if(err2) throw err2;
-                            if(!row2.length){ //if viewer is not already added in the list
-                                connection.query("INSERT INTO requests (equip_id, applicant_id) VALUES (?,?)", [req.params.id, applicant_id], function(err){
-                                    if(err) throw err;
-                                });
-                            }
+        if(user_access(req,res)){
+            var applicant_id = req.session.user;
+            if (applicant_id != req.params.owner_id){    
+                connection.query("SELECT * FROM requests WHERE equip_id = ? AND applicant_id = ?",[req.params.id, applicant_id],function(err2, row2){
+                    if(err2) throw err2;
+                    if(!row2.length){ //if viewer is not already added in the list
+                        connection.query("INSERT INTO requests (equip_id, applicant_id) VALUES (?,?)", [req.params.id, applicant_id], function(err){
+                            if(err) throw err;
                         });
                     }
-                }    
-                connection.query("SELECT * FROM all_equipment WHERE id = ?",[req.params.id],function(err3,rows3){
+                });
+            }
+        }
+        connection.query("SELECT * FROM all_equipment WHERE id = ?",[req.params.id],function(err1,rows1){
+            if (err1) throw err1 ;
+            else{    
+                connection.query("SELECT name, mobile, email, address1,address2,address3, city, state, zipcode  FROM account WHERE id = ?",[rows1[0].owner_id],function(err3,rows3){
                         if (err3) throw err3;
                         else{ 
-                            connection.query("SELECT * FROM equipment_type WHERE type_id = ?" ,[rows3[0].type_id], function(err4, rows4){
+                            connection.query("SELECT * FROM equipment_type WHERE type_id = ?" ,[rows1[0].type_id], function(err4, rows4){
                                 if(err4) throw err4;
-                                else res.render('./user_request.ejs', {owner_details : rows1[0] , equip_data : rows3, featured:index_featured, tech_info : rows4[0] , isLoggedIn : isLoggedIn(req,res), username: req.session.name});    
+                                else res.render('./user_request.ejs', {owner_details : rows3[0] , equip_data : rows1, featured:index_featured, tech_info : rows4[0] , isLoggedIn : isLoggedIn(req,res), username: req.session.name});    
                             });
                         }
                 });
