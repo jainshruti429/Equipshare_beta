@@ -60,7 +60,7 @@ module.exports = {
                                     break;
                                 }
                             }
-                            if(!feat_data[i].views) feat_data.views = 0;
+                            if(!feat_data[i].views) feat_data[i].views = 0;
                             
                             for(var j = 0 ; j <rows2.length; j++){
                                 if(featured[i].equip_id == rows2[j].equip_id){
@@ -70,7 +70,6 @@ module.exports = {
                             }
                             if(!feat_data[i].requests) feat_data[i].requests = 0;
                         }
-                        console.log(feat_data);
                         return next();
                     }
                 });
