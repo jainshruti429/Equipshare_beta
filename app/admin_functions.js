@@ -22,122 +22,62 @@ connection.query("SELECT DISTINCT category FROM equipment_type", function(errc,c
     else cat_rows = crows;
 });
 
+
+
+
 var featured = [];
 var prev_featured = [];
 var feat_details = [];
-str1 = "SELECT featured.views, featured.start_date, featured.end_date, featured.display,all_equipment.photo1, all_equipment.expected_price, all_equipment.owner_id, all_equipment.subcategory, all_equipment.brand, all_equipment.model, all_equipment.id FROM all_equipment INNER JOIN featured ON featured.equip_id = all_equipment.id";
-connection.query(str1, function(err,rows){
-    if(err) throw err;
-    else{
-        var j =0;
-        var k =0;
-        for(var i = 0; i<rows.length; i++){
-            if(rows[i].display){
-                featured[j] = rows[i];
-                j++;
-            }
-            else{
-                prev_featured[k] = rows[i];
-                k++;
-            } 
-        }
-        str2 = "SELECT name, address1, address2, address3, city, state, zipcode, mobile FROM account WHERE id = ? OR id = ? OR id = ? ";
-        connection.query(str2, [featured[0].owner_id,featured[1].owner_id,featured[2].owner_id] , function(err2,rows2){
-            if(err2) throw err2;
-            else{
-                if(rows2.length == featured.length) details = rows2;
-                else if(rows2.length == 1){
-                    for(var i = 0 ; i < 3 ; i++){
-                        feat_details[i] = rows2[0];
-                    }
-                } 
-                else{
-                    if(featured[0].owner_id == featured[1].owner_id){
-                        feat_details[0] = rows2[0];
-                        feat_details[1] = rows2[0];
-                        feat_details[2] = rows2[1];
-                    }
-                    if(featured[1].owner_id == featured[2].owner_id){
-                        feat_details[0] = rows2[0];
-                        feat_details[1] = rows2[1];
-                        feat_details[2] = rows2[1];   
-                    }
-                    if(featured[0].owner_id == featured[2].owner_id){
-                        feat_details[0] = rows2[0];
-                        feat_details[1] = rows2[1];
-                        feat_details[2] = rows2[0];   
-                    }
-                }
-            }
-        });
-    }
-});
-
+var data = [];
+var datarows = [];
 var feat_data = [];
-str1 = "SELECT views.equip_id, count(views.equip_id) FROM views INNER JOIN featured ON featured.equip_id = views.equip_id WHERE featured.display = 1 GROUP BY views.equip_id";
-connection.query(str1, function(err1,rows1){
-    if(err1) throw err1;
-    else{
-        str2 = "SELECT requests.equip_id, count(requests.equip_id) FROM requests INNER JOIN featured ON featured.equip_id = requests.equip_id WHERE featured.display = 1 GROUP BY requests.equip_id";
-        connection.query(str2, function(err2,rows2){
-            if(err2) throw err2;
-            else{
-                for(var i =0; i<featured.length; i++){
-                    feat_data[i] = {
-                        views : '',
-                        requests: ''
-                    }
-
-                    for(var j = 0 ; j <rows1.length; j++){
-                        if(featured[i].equip_id == rows1[j].equip_id){
-                            feat_data[i].views = rows1[j].count(views.equip_id);
-                            break;
-                        }
-                    }
-                    if(!feat_data[i].views) feat_data.views = 0;
-                    
-                    for(var j = 0 ; j <rows2.length; j++){
-                        if(featured[i].equip_id == rows2[j].equip_id){
-                            feat_data[i].requests = rows2[j].count(requests.equip_id);
-                            break;
-                        }
-                    }
-                    if(!feat_data[i].requests) feat_data[i].requests = 0;
-                }
-            }
-        });
-    }
-});
-
-
 
 module.exports = {
 
-	//================================================================================
-    //======================= ADMIN FUNCTIONS ========================================
-    //================================================================================
+//================================================================================
+//======================= ADMIN FUNCTIONS ========================================
+//================================================================================
     //get_login and post_login in routes page...passport k pain tha
-    
-    featured: function(req,res){
-        res.render('./admin_featured.ejs' , {featured: featured, feat_details:feat_details, prev_featured : prev_featured, feat_data});                
-    },
+  
+    feat_data : function(req,res,next){
+        str1 = "SELECT views.equip_id, count(views.equip_id) FROM views INNER JOIN featured ON featured.equip_id = views.equip_id WHERE featured.display = 1 GROUP BY views.equip_id";
+        connection.query(str1, function(err1,rows1){
+            if(err1) throw err1;
+            else{
+                str2 = "SELECT requests.equip_id, count(requests.equip_id) FROM requests INNER JOIN featured ON featured.equip_id = requests.equip_id WHERE featured.display = 1 GROUP BY requests.equip_id";
+                connection.query(str2, function(err2,rows2){
+                    if(err2) throw err2;
+                    else{
+                        for(var i =0; i<featured.length; i++){
+                            feat_data[i] = {
+                                views : '',
+                                requests: ''
+                            }
 
-    remove_featured: function(req,res,next){
-        var today = new Date();
-        var dd = today.getDate();
-        var mm = today.getMonth()+1; //January is 0!
-        var yyyy = today.getFullYear();
-        if(dd<10) dd = '0'+dd;
-        if(mm<10) mm = '0'+mm; 
-        today = dd + '/' + mm + '/' + yyyy;
-
-        connection.query("UPDATE featured SET display = 0, end_date =? WHERE equip_id = ?",[today,req.params.id],function(err){
-            if(err) throw err;
-            else res.next();
+                            for(var j = 0 ; j <rows1.length; j++){
+                                if(featured[i].equip_id == rows1[j].equip_id){
+                                    feat_data[i].views = rows1[j].count(views.equip_id);
+                                    break;
+                                }
+                            }
+                            if(!feat_data[i].views) feat_data.views = 0;
+                            
+                            for(var j = 0 ; j <rows2.length; j++){
+                                if(featured[i].equip_id == rows2[j].equip_id){
+                                    feat_data[i].requests = rows2[j].count(requests.equip_id);
+                                    break;
+                                }
+                            }
+                            if(!feat_data[i].requests) feat_data[i].requests = 0;
+                        }
+                        return next();
+                    }
+                });
+            }
         });
     },
 
-    get_add_featured: function(req,res){
+    available : function(req,res,next){
         str = "SELECT all_equipment.id, all_equipment.category, all_equipment.subcategory, all_equipment.brand, all_equipment.model,all_equipment.expected_price,account.name, account.address1, account.address2, account.address3, account.city, account.state, account.zipcode, account.email, account.mobile FROM account INNER JOIN all_equipment ON all_equipment.owner_id = account.id WHERE available = 1"
         connection.query(str,function(err, rows){
             if (err) throw err;
@@ -173,13 +113,88 @@ module.exports = {
                                     }
                                     if(!data[i].requests) data[i].requests = 0;
                                 }
-                                res.render('./admin_add_featured.ejs',{feat_details:feat_details, featured:featured, datarows : rows, data : data});
+                                datarows = rows;
+                                return next();    
                             }
                         });
                     }
                 });
             }
         });
+    },
+
+    featured_equip : function(req,res, next){
+        str1 = "SELECT featured.views, featured.start_date, featured.end_date, featured.display,all_equipment.photo1, all_equipment.expected_price, all_equipment.owner_id, all_equipment.subcategory, all_equipment.brand, all_equipment.model, all_equipment.id FROM all_equipment INNER JOIN featured ON featured.equip_id = all_equipment.id";
+        connection.query(str1, function(err,rows){
+            if(err) throw err;
+            else{
+                var j =0;
+                var k =0;
+                for(var i = 0; i<rows.length; i++){
+                    if(rows[i].display){
+                        featured[j] = rows[i];
+                        j++;
+                    }
+                    else{
+                        prev_featured[k] = rows[i];
+                        k++;
+                    } 
+                }
+                str2 = "SELECT name, address1, address2, address3, city, state, zipcode, mobile FROM account WHERE id = ? OR id = ? OR id = ? ";
+                connection.query(str2, [featured[0].owner_id,featured[1].owner_id,featured[2].owner_id] , function(err2,rows2){
+                    if(err2) throw err2;
+                    else{
+                        if(rows2.length == featured.length) details = rows2;
+                        else if(rows2.length == 1){
+                            for(var i = 0 ; i < 3 ; i++){
+                                feat_details[i] = rows2[0];
+                            }
+                        } 
+                        else{
+                            if(featured[0].owner_id == featured[1].owner_id){
+                                feat_details[0] = rows2[0];
+                                feat_details[1] = rows2[0];
+                                feat_details[2] = rows2[1];
+                            }
+                            if(featured[1].owner_id == featured[2].owner_id){
+                                feat_details[0] = rows2[0];
+                                feat_details[1] = rows2[1];
+                                feat_details[2] = rows2[1];   
+                            }
+                            if(featured[0].owner_id == featured[2].owner_id){
+                                feat_details[0] = rows2[0];
+                                feat_details[1] = rows2[1];
+                                feat_details[2] = rows2[0];   
+                            }
+                        }
+                        return next();
+                    }
+                });
+            }
+        });
+    },
+  
+    featured: function(req,res){
+        res.render('./admin_featured.ejs' , {featured: featured, feat_details:feat_details, prev_featured : prev_featured, feat_data: feat_data});                
+    },
+
+    remove_featured: function(req,res,next){
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear();
+        if(dd<10) dd = '0'+dd;
+        if(mm<10) mm = '0'+mm; 
+        today = dd + '/' + mm + '/' + yyyy;
+
+        connection.query("UPDATE featured SET display = 0, end_date =? WHERE equip_id = ?",[today,req.params.id],function(err){
+            if(err) throw err;
+            else res.next();
+        });
+    },
+
+    get_add_featured: function(req,res){
+        res.render("./admin_add_featured.ejs", {featured:featured , feat_data:feat_data, feat_details:feat_details, datarows:datarows, data:data});
     },
 
     post_add_featured: function(req,res, next){
@@ -191,10 +206,20 @@ module.exports = {
         if(mm<10) mm = '0'+mm; 
         today = dd + '/' + mm + '/' + yyyy;
 
-        connection.query("INSERT INTO featured (equip_id,display,start_date, views, end_date) VALUES (?,?,?,?,?)",[req.params.id,1,today,0, 0], function(err){
-            if (err) throw err;
-            else next();
+        connection.query('SELECT * FROM featured WHERE equip_id=?',[req.params.id],function(err1,rows1){
+            if(err1) throw err1;
+            else if(rows1.length) return next();
+            else {
+                connection.query("INSERT INTO featured (equip_id,display,start_date, views, end_date) VALUES (?,?,?,?,?)",[req.params.id,1,today,0, 0], function(err){
+                    if (err) throw err;
+                    else return next();
+                });
+            }
         });
+    },
+
+    view_equipment: function(req , res){
+        res.render("./admin_view_equipment.ejs", {datarows:datarows, data:data});
     },
 
     get_reset_password : function(req,res){
@@ -368,14 +393,8 @@ module.exports = {
             else res.render('./Profiles/admin/view_all_equipments.ejs' , {datarows: rows});
         });
     },
-    //has to be changed....
-    view_equipment: function(req , res){
-        connection.query("SELECT * FROM all_equipment WHERE available = 1",function(err,rows){
-            if (err) throw err ; 
-            else res.render('./Profiles/admin/view_equipment.ejs' , {datarows: rows});
-        });
-    },
 
+    
     unavailable: function(req,res){
         connection.query("UPDATE all_equipment SET available = 0 WHERE id = ?",[req.params.id], function(err, rows){
             if(err) throw err;
