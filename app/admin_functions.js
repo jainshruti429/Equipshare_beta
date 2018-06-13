@@ -70,6 +70,7 @@ module.exports = {
                             }
                             if(!feat_data[i].requests) feat_data[i].requests = 0;
                         }
+                        console.log(feat_data);
                         return next();
                     }
                 });
