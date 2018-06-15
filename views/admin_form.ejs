@@ -8,6 +8,7 @@
         
      <%- include admin_sidebar.ejs %>
         <!--main content begin here-->
+       
         <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12" style="padding:0">
         <div class="main-content">
 				<div class="main-content-inner">
@@ -100,10 +101,10 @@
 
 						<div class="page-header">
 							<h1>
-								Form Elements
+								Admin Form
 								<small>
 									<i class="ace-icon fa fa-angle-double-right"></i>
-									Common form elements and layouts
+									Add Equipment
 								</small>
 							</h1>
 						</div><!-- /.page-header -->
@@ -115,47 +116,66 @@
 								
                                     <form class="form-horizontal" role="form">
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Text Field </label>
+										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Category </label>
 
 										<div class="col-sm-9">
-											<input type="text" id="form-field-1" placeholder="Username" class="col-xs-10 col-sm-5" />
+											<select class="form-control col-xs-10 col-sm-5">
+                                            <option></option>    
+                                            <option>Category1</option>    
+                                            <option>Category2</option>    
+                                            <option>Category3</option>    
+                                            <option>Category4</option>    
+                                            <option>Category5</option>    
+                                            </select>
 										</div>
 									</div>
 
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> Full Length </label>
+										<label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> Sub Category </label>
 
 										<div class="col-sm-9">
-											<input type="text" id="form-field-1-1" placeholder="Text Field" class="form-cntrol col-xs-10 col-sm-5" />
+											<select class="form-cntrol col-xs-10 col-sm-5">
+                                                 <option></option>    
+                                            <option>Category1</option>    
+                                            <option>Category2</option>    
+                                            <option>Category3</option>    
+                                            <option>Category4</option>    
+                                            <option>Category5</option> 
+                                            </select>
 										</div>
 									</div>
 
 									<div class="space-4"></div>
 
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-field-2"> Password Field </label>
+										<label class="col-sm-3 control-label no-padding-right" for="form-field-2"> Brand </label>
 
 										<div class="col-sm-9">
-											<input type="password" id="form-field-2" placeholder="Password" class="col-xs-10 col-sm-5" />
-											<span class="help-inline col-xs-12 col-sm-7">
-												<span class="middle">Inline help text</span>
-											</span>
+											<select class="form-cntrol col-xs-10 col-sm-5">
+                                                 <option></option>    
+                                            <option>Brand 1</option>    
+                                            <option>Brand 2</option>    
+                                            <option>Brand 3</option>    
+                                            <option>Brand 4</option>    
+                                            <option>Brand 5</option> 
+                                            </select>
 										</div>
 									</div>
 
 									<div class="space-4"></div>
 
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-input-readonly"> Readonly field </label>
+										<label class="col-sm-3 control-label no-padding-right" for="form-input-readonly"> Model </label>
 
 										<div class="col-sm-9">
-											<input readonly="" type="text" class="col-xs-10 col-sm-5" id="form-input-readonly" value="This text field is readonly!" />
-											<span class="help-inline col-xs-12 col-sm-7">
-												<label class="middle">
-													<input class="ace" type="checkbox" id="id-disable-check" />
-													<span class="lbl"> Disable it!</span>
-												</label>
-											</span>
+											<select class="form-cntrol col-xs-10 col-sm-5">
+                                                 <option></option>    
+                                            <option>Model 1</option>    
+                                            <option>Model 2</option>    
+                                            <option>Model 3</option>    
+                                            <option>Model 4</option>    
+                                            <option>Model 5</option> 
+                                            </select>
 										</div>
 									</div>
 
@@ -185,8 +205,176 @@
 											<div class="help-block" id="input-span-slider"></div>
 										</div>
 									</div>-->
+                                        
+                                        <div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Year </label>
 
-									<div class="form-group">
+										<div class="col-sm-9">
+											<input type="number" id="form-field-1" placeholder="Enter Year" class="col-xs-10 col-sm-5" />
+										</div>
+									</div>
+                                        
+                                         <div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Km </label>
+
+										<div class="col-sm-9">
+											<input type="number" id="form-field-1" placeholder="Enter Price Basis on Km" class="col-xs-10 col-sm-5" />
+										</div>
+									</div>
+                                        
+                                        <div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Expected Price </label>
+
+										<div class="col-sm-9">
+											<input type="number" id="form-field-1" placeholder="Enter Expectd Price" class="col-xs-10 col-sm-5" />
+										</div>
+									</div>
+                                        
+                                         <div class="form-group">
+										 <label for="inputEmail3" class="col-sm-3 control-label no-padding-right custom-form-name-title">Enter State</label>
+										<div class="col-sm-9">
+											   <select id="listBox" onchange='selct_district(this.value)' class="col-xs-10 col-sm-5"></select>
+										</div>
+									</div>
+                                        
+                                        <div class="form-group">
+										 <label for="inputEmail3" class="col-sm-3 control-label no-padding-right custom-form-name-title">Enter City</label>
+										<div class="col-sm-9">
+											   <select id='secondlist' class="col-xs-10 col-sm-5"></select>
+										</div>
+									</div>
+                                        
+                                         <div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Address Line 1 </label>
+
+										<div class="col-sm-9">
+											<input type="number" id="form-field-1" placeholder="Enter Address Line 1" class="col-xs-10 col-sm-5" />
+										</div>
+									</div>
+                                        
+                                         <div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Address Line 2 </label>
+
+										<div class="col-sm-9">
+											<input type="number" id="form-field-1" placeholder="Enter Address Line 2" class="col-xs-10 col-sm-5" />
+										</div>
+									</div>
+                                        
+                                         <div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Address Lne 3 </label>
+
+										<div class="col-sm-9">
+											<input type="number" id="form-field-1" placeholder="Enter Address Line 3" class="col-xs-10 col-sm-5" />
+										</div>
+									</div>
+                                        
+                                         <div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Owner's Name </label>
+
+										<div class="col-sm-9">
+											<input type="number" id="form-field-1" placeholder="Enter Owner's Name" class="col-xs-10 col-sm-5" />
+										</div>
+									</div>
+                                        
+                                         <div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Owner's Mobile </label>
+
+										<div class="col-sm-9">
+											<input type="number" id="form-field-1" placeholder="Enter Owner's Mobile" class="col-xs-10 col-sm-5" />
+										</div>
+									</div>
+                                        
+                                         <div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Owner's Email </label>
+
+										<div class="col-sm-9">
+											<input type="number" id="form-field-1" placeholder="Enter Owner's Email" class="col-xs-10 col-sm-5" />
+										</div>
+									</div>
+                                        
+                                         <div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Featured Photo </label>
+
+										<div class="col-sm-9">
+                                            <input type="file" class="col-xs-10 col-sm-5" name="featured_photo">
+										</div>
+									</div>
+                                        
+                                        <div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Additional Photos </label>
+
+										<div class="col-sm-9">
+                                            <input type="file" class="col-xs-10 col-sm-5" name="add_photo_1">
+										</div>
+									</div>
+                                        
+                                        <div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Additional Photo </label>
+
+										<div class="col-sm-9">
+                                            <input type="file" class="col-xs-10 col-sm-5" name="add_photo_2">
+										</div>
+									</div>
+                                        
+                                        <div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Additional Photo </label>
+										<div class="col-sm-9">
+                                            <input type="file" class="col-xs-10 col-sm-5" name="add_photo_3">
+										</div>
+									</div>
+                                        
+                                        <div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Additional Photo </label>
+										<div class="col-sm-9">
+                                            <input type="file" class="col-xs-10 col-sm-5" name="add_photo_4">
+										</div>
+									</div>
+                                        
+                                        <div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Invoice Document </label>
+										<div class="col-sm-9">
+                                            <input type="file" class="col-xs-10 col-sm-5" name="invoice_doc">
+										</div>
+									</div>
+                                        
+                                        <div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Insurance Document </label>
+										<div class="col-sm-9">
+                                            <input type="file" class="col-xs-10 col-sm-5" name="insurance_doc">
+										</div>
+									</div>
+                                        
+                                        <div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Fitness Document </label>
+										<div class="col-sm-9">
+                                            <input type="file" class="col-xs-10 col-sm-5" name="fitness_doc">
+										</div>
+									</div>
+                                        
+                                        <div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> RC Document </label>
+										<div class="col-sm-9">
+                                            <input type="file" class="col-xs-10 col-sm-5" name="rc_doc">
+										</div>
+									</div>
+                                        
+                                        <div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> POC Document </label>
+										<div class="col-sm-9">
+                                            <input type="file" class="col-xs-10 col-sm-5" name="poc_doc">
+										</div>
+									</div>
+                                        
+                                        <div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Roadtax Document </label>
+										<div class="col-sm-9">
+                                            <input type="file" class="col-xs-10 col-sm-5" name="roadtax_doc">
+										</div>
+									</div>
+                                        
+                                        
+                                        
+									<!--<div class="form-group">
 										<label class="col-sm-3 control-label no-padding-right">Input with Icon</label>
 
 										<div class="col-sm-9">
@@ -204,7 +392,7 @@
 
 									<div class="space-4"></div>
 
-									<div class="form-group">
+								<!--	<div class="form-group">
 										<label class="col-sm-3 control-label no-padding-right" for="form-field-6">Tooltip and help button</label>
 
 										<div class="col-sm-9">
@@ -223,10 +411,11 @@
 												<input type="text" name="tags" id="form-field-tags" value="Tag Input Control" placeholder="Enter tags ..." />
 											</div>
 										</div>
-									</div>
+									</div> --
+>
                                         
                                       <!--choose a state here-->
-                                        <div class="form-group">
+                                       <!-- <div class="form-group">
       <label for="basic" class="col-sm-3 control-label no-padding-right">Choose a state (live search)</label>
 
       <div class="col-lg-9 col-sm-9">
@@ -238,19 +427,14 @@
           <option>Tamil Nadu</option>
           <option data-subtext="option subtext">bull</option>
           <option class="get-class" disabled>ox</option>
-          <!--<optgroup label="test" data-subtext="optgroup subtext">
-            <option>ASD</option>
-            <option selected>Bla</option>
-            <option>Ble</option>
-          </optgroup>-->
         </select>
       </div>
-    </div>
+    </div> -->
                                         
                                         <!--end choose state end here-->
                                         
                                         <!--check box and radio button-->
-                                        <div class="form-group form-inline">
+                                     <!--   <div class="form-group form-inline">
          <label for="basic" class="col-sm-3 control-label no-padding-right">Inline Checkboxes</label>
                                         <div class="checkbox" style="padding-left:20px;">
 													<label>
@@ -275,7 +459,7 @@
                                         
                                         </div><!--checkbox-->
                                         
-                                        <div class="form-group form-inline">
+                                     <!--   <div class="form-group form-inline">
          <label for="basic" class="col-sm-3 control-label no-padding-right">Inline Radio Button</label>
                                         <div class="radio" style="padding-left:20px;">
 													<label>
@@ -308,7 +492,7 @@
 
 									<div class="clearfix form-actions">
 										<div class="col-md-offset-3 col-md-9">
-											<button class="btn btn-info" type="button">
+											<button class="btn btn-info" type="submit">
 												<i class="ace-icon fa fa-check bigger-110"></i>
 												Submit
 											</button>
@@ -370,6 +554,7 @@
             
         
         </div><!--end col 8 here-->
+        
         
         
         
