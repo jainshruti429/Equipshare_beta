@@ -326,12 +326,11 @@
 										</table>
 									</div><!-- /.span -->
 								</div><!-- /.row -->
-		<a href="/admin_add_featured">Add new Featured</a>  
 		                                      
                                         <!--end upper table-->
                                         
 										<div class="table-header">
-											Previous Featured
+											Available Equipments
 										</div>
 
 										<!-- div.table-responsive -->
@@ -347,44 +346,43 @@
 														<th>Brand | Model</th>
 														<th>Price</th>
 														<th>
-															<i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>
-															Start Date | End Date
+															Views | Requests
 														</th>
-														<th>Views</th>
 														<th> </th>
 														
 														
 													</tr>
 
 												</thead>
-												<%for(var i = 0 ; i<prev_featured.length;i++){%>
+												<%for(var i = 0 ; i<datarows.length;i++){%>
 												<tbody>
 													<tr>
-														<td><%=prev_featured[i].category%></td>
-														<td><%=prev_featured[i].subcategory%></td>
-														<td><%=prev_featured[i].brand%> | <%=prev_featured[i].model%></td>
-														<td><%=prev_featured[i].expected_price%></td>
-														<td><%=prev_featured[i].start_date%> | <%=prev_featured[i].end_date%></td>
-														<td><%=prev_featured[i].views%></td>
+														<td><%=datarows[i].category%></td>
+														<td><%=datarows[i].subcategory%></td>
+														<td><%=datarows[i].brand%> | <%=datarows[i].model%></td>
+														<td><%=datarows[i].expected_price%></td>
+														<td><%=data[i].views%> | <%=data[i].requests%></td>
 														
 														
 														<td>
                                                             <div class="hidden-sm hidden-xs btn-group">
-                                                           	<a href= "/admin_view_details<%=prev_featured[i].equip_id%>" >
+															<a href = "/admin_view_details<%=datarows[i].id%>" >
 																<button type = "submit" class="btn btn-xs btn-warning">
 																<i class="fa fa-eye" aria-hidden="true"></i>
 																</button>
 															</a>
-															 
-															 	<!-- <button class="btn btn-xs btn-success">
+															<a href= "/admin_add_this_featured<%=datarows[i].id%>">
+															 <button class="btn btn-xs btn-success">
 																<i class="fa fa-check" aria-hidden="true"></i>
-																</button> -->
+															</button>
+															</a>
 														</div>
                                                             
                                                             
 
 															<div class="hidden-md hidden-lg">
 																<div class="inline pos-rel">
+																	
 																	<button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto">
 																		<i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>
 																	</button>

@@ -40,6 +40,7 @@ module.exports = {
     //get_login and post_login in routes page...passport k pain tha
   
     feat_data : function(req,res,next){
+        feat_data = [];
         str1 = "SELECT views.equip_id, count(views.equip_id) as no_views FROM views INNER JOIN featured ON featured.equip_id = views.equip_id WHERE featured.display = 1 GROUP BY views.equip_id";
         connection.query(str1, function(err1,rows1){
             if(err1) throw err1;
@@ -78,6 +79,8 @@ module.exports = {
     },
 
     available : function(req,res,next){
+        datarows = [];
+        data = [];
         str = "SELECT all_equipment.id, all_equipment.category, all_equipment.subcategory, all_equipment.brand, all_equipment.model,all_equipment.expected_price,account.name, account.address1, account.address2, account.address3, account.city, account.state, account.zipcode, account.email, account.mobile FROM account INNER JOIN all_equipment ON all_equipment.owner_id = account.id WHERE available = 1"
         connection.query(str,function(err, rows){
             if (err) throw err;
@@ -123,7 +126,10 @@ module.exports = {
     },
 
     featured_equip : function(req,res, next){
-        str1 = "SELECT featured.equip_id,featured.views, featured.start_date, featured.end_date, featured.display,all_equipment.photo1, all_equipment.expected_price, all_equipment.owner_id, all_equipment.subcategory, all_equipment.brand, all_equipment.model, all_equipment.id FROM all_equipment INNER JOIN featured ON featured.equip_id = all_equipment.id";
+        featured = [];
+        prev_featured = [];
+        feat_details = [];
+        str1 = "SELECT featured.equip_id,featured.views, featured.start_date, featured.end_date, featured.display,all_equipment.photo1, all_equipment.expected_price, all_equipment.subcategory, all_equipment.brand, all_equipment.model, all_equipment.owner_id FROM all_equipment INNER JOIN featured ON featured.equip_id = all_equipment.id";
         connection.query(str1, function(err,rows){
             if(err) throw err;
             else{
@@ -145,12 +151,13 @@ module.exports = {
                 }
                 str = str.slice(0,-1);
                 str = str +")";
+                console.log(str);
                 connection.query(str, function(err2,rows2){
                     if(err2) throw err2;
                     else{
-                        if(rows2.length == featured.length) details = rows2;
+                        if(rows2.length == featured.length) feat_details = rows2;
                         else if(rows2.length == 1){
-                            for(var i = 0 ; i < 3 ; i++){
+                             for(var i = 0 ; i < 3 ; i++){
                                 feat_details[i] = rows2[0];
                             }
                         } 
@@ -171,6 +178,8 @@ module.exports = {
                                 feat_details[2] = rows2[0];   
                             }
                         }
+                        console.log(featured);
+                        console.log(feat_details);
                         return next();
                     }
                 });
@@ -198,7 +207,8 @@ module.exports = {
     },
 
     get_add_featured: function(req,res){
-        res.render("./admin_add_featured.ejs", {featured:featured , feat_data:feat_data, feat_details:feat_details, datarows:datarows, data:data});
+        if(featured.length < 3) res.render("./admin_add_featured.ejs", {featured:featured , feat_data:feat_data, feat_details:feat_details, datarows:datarows, data:data});
+        else res.render('./admin_featured.ejs' , {featured: featured, feat_details:feat_details, prev_featured : prev_featured, feat_data: feat_data});                 
     },
 
     post_add_featured: function(req,res, next){
@@ -212,7 +222,6 @@ module.exports = {
 
         connection.query('SELECT * FROM featured WHERE equip_id=?',[req.params.id],function(err1,rows1){
             if(err1) throw err1;
-            else if(rows1.length) return next();
             else {
                 connection.query("INSERT INTO featured (equip_id,display,start_date, views, end_date) VALUES (?,?,?,?,?)",[req.params.id,1,today,0, 0], function(err){
                     if (err) throw err;

@@ -140,8 +140,8 @@ module.exports = function(app, passport) {
     app.get('/admin_featured', general_functions.isLoggedInfunc, admin_access, admin_functions.featured_equip, admin_functions.feat_data, admin_functions.featured);
     app.get('/admin_view_details:id', general_functions.isLoggedInfunc,admin_access, user_functions.request_this);
     app.get('/admin_remove_featured:id',general_functions.isLoggedInfunc,admin_access,admin_functions.remove_featured,admin_functions.featured_equip, admin_functions.feat_data, admin_functions.featured);
-    app.get('/admin_add_featured',general_functions.isLoggedInfunc,admin_access,admin_functions.featured_equip, admin_functions.feat_data, admin_functions.available, admin_functions.get_add_featured);    
-    app.post('/admin_add_featured:id',general_functions.isLoggedInfunc,admin_access, admin_functions.post_add_featured, admin_functions.featured_equip, admin_functions.feat_data, function(req,res,next){
+    app.get('/admin_add_featured',general_functions.isLoggedInfunc,admin_access,admin_functions.featured_equip, admin_functions.feat_data ,admin_functions.available, admin_functions.get_add_featured);    
+    app.get('/admin_add_this_featured:id',general_functions.isLoggedInfunc,admin_access, admin_functions.post_add_featured, admin_functions.featured_equip, admin_functions.feat_data, function(req,res,next){
         connection.query("SELECT equip_id FROM featured WHERE display = 1", function(err,rows){
             if(err) throw err;
             else if(rows.length == 3) admin_functions.featured(req,res);
