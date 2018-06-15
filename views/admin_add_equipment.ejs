@@ -6,9 +6,11 @@
             <div class="container-fluid">
     <div class="row">
         
-     <%- include admin_sidebar.ejs %>
+       <%- include admin_sidebar.ejs %>
         <!--main content begin here-->
-       
+        
+        
+        
         <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12" style="padding:0">
         <div class="main-content">
 				<div class="main-content-inner">
@@ -104,287 +106,17 @@
 								Admin Form
 								<small>
 									<i class="ace-icon fa fa-angle-double-right"></i>
-									Add Equipment
+									Add Equipment (REGISTERED USER)
 								</small>
 							</h1>
 						</div><!-- /.page-header -->
-						
-						
-						 
-                          <div class="admin_choose_owner center-block text-center" style="margin-bottom:20px;">
-                        <div class="row">
-                      
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <h4>Choose whether a New User or Registered User</h4>
-                            </div>
-                            <div class="col-lg-offset-3 col-lg-3 col-md-offset-3 col-md-3 col-sm-12 col-xs-12">
-                            <button type="submit" class="btn btn-primary btn-existing" id="register_btn">Registered User</button>
-                            </div>
-                            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                            <button type="submit" class="btn btn-success btn-custom_new" id="new_btn">New User</button>
-                            </div>
-                            </div>
-                        </div>
-                        
-                        
                         
 
 						<div class="row">
 								<div class="col-xs-12">
 								<!-- PAGE CONTENT BEGINS -->
 								
-								<div id="add_new_user" style="display:none">
-                                    <form class="form-horizontal" role="form">
-									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Category </label>
-
-										<div class="col-sm-9">
-											<select class="form-control col-xs-10 col-sm-5">
-                                            <option></option>    
-                                            <option>Category1</option>    
-                                            <option>Category2</option>    
-                                            <option>Category3</option>    
-                                            <option>Category4</option>    
-                                            <option>Category5</option>    
-                                            </select>
-										</div>
-									</div>
-
-									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> Sub Category </label>
-
-										<div class="col-sm-9">
-											<select class="form-cntrol col-xs-10 col-sm-5">
-                                                 <option></option>    
-                                            <option>Category1</option>    
-                                            <option>Category2</option>    
-                                            <option>Category3</option>    
-                                            <option>Category4</option>    
-                                            <option>Category5</option> 
-                                            </select>
-										</div>
-									</div>
-
-									<div class="space-4"></div>
-
-									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-field-2"> Brand </label>
-
-										<div class="col-sm-9">
-											<select class="form-cntrol col-xs-10 col-sm-5">
-                                                 <option></option>    
-                                            <option>Brand 1</option>    
-                                            <option>Brand 2</option>    
-                                            <option>Brand 3</option>    
-                                            <option>Brand 4</option>    
-                                            <option>Brand 5</option> 
-                                            </select>
-										</div>
-									</div>
-
-									<div class="space-4"></div>
-
-									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-input-readonly"> Model </label>
-
-										<div class="col-sm-9">
-											<select class="form-cntrol col-xs-10 col-sm-5">
-                                                 <option></option>    
-                                            <option>Model 1</option>    
-                                            <option>Model 2</option>    
-                                            <option>Model 3</option>    
-                                            <option>Model 4</option>    
-                                            <option>Model 5</option> 
-                                            </select>
-										</div>
-									</div>
-
-									<div class="space-4"></div>
-
-									<!--<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-field-4">Relative Sizing</label>
-
-										<div class="col-sm-9">
-											<input class="input-sm" type="text" id="form-field-4" placeholder=".input-sm" />
-											<div class="space-2"></div>
-
-											<div class="help-block" id="input-size-slider"></div>
-										</div>
-									</div>-->
-
-									<!--<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-field-5">Grid Sizing</label>
-
-										<div class="col-sm-9">
-											<div class="clearfix">
-												<input class="col-xs-1" type="text" id="form-field-5" placeholder=".col-xs-1" />
-											</div>
-
-											<div class="space-2"></div>
-
-											<div class="help-block" id="input-span-slider"></div>
-										</div>
-									</div>-->
-                                        
-                                        <div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Year </label>
-
-										<div class="col-sm-9">
-											<input type="number" id="form-field-1" placeholder="Enter Year" class="col-xs-10 col-sm-5" />
-										</div>
-									</div>
-                                        
-                                         <div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Km </label>
-
-										<div class="col-sm-9">
-											<input type="number" id="form-field-1" placeholder="Enter Price Basis on Km" class="col-xs-10 col-sm-5" />
-										</div>
-									</div>
-                                        
-                                        <div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Expected Price </label>
-
-										<div class="col-sm-9">
-											<input type="number" id="form-field-1" placeholder="Enter Expectd Price" class="col-xs-10 col-sm-5" />
-										</div>
-									</div>
-                                        
-                                         <div class="form-group">
-										 <label for="inputEmail3" class="col-sm-3 control-label no-padding-right custom-form-name-title">Enter State</label>
-										<div class="col-sm-9">
-											   <select id="listBox" onchange='selct_district(this.value)' class="col-xs-10 col-sm-5"></select>
-										</div>
-									</div>
-                                        
-                                        <div class="form-group">
-										 <label for="inputEmail3" class="col-sm-3 control-label no-padding-right custom-form-name-title">Enter City</label>
-										<div class="col-sm-9">
-											   <select id='secondlist' class="col-xs-10 col-sm-5"></select>
-										</div>
-									</div>
-                                        
-                                         <div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Address Line 1 </label>
-
-										<div class="col-sm-9">
-											<input type="number" id="form-field-1" placeholder="Enter Address Line 1" class="col-xs-10 col-sm-5" />
-										</div>
-									</div>
-                                        
-                                         <div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Address Line 2 </label>
-
-										<div class="col-sm-9">
-											<input type="number" id="form-field-1" placeholder="Enter Address Line 2" class="col-xs-10 col-sm-5" />
-										</div>
-									</div>
-                                        
-                                         <div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Address Lne 3 </label>
-
-										<div class="col-sm-9">
-											<input type="number" id="form-field-1" placeholder="Enter Address Line 3" class="col-xs-10 col-sm-5" />
-										</div>
-									</div>
-                                        
-                                         <div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Owner's Name </label>
-
-										<div class="col-sm-9">
-											<input type="number" id="form-field-1" placeholder="Enter Owner's Name" class="col-xs-10 col-sm-5" />
-										</div>
-									</div>
-                                        
-                                         <div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Owner's Mobile </label>
-
-										<div class="col-sm-9">
-											<input type="number" id="form-field-1" placeholder="Enter Owner's Mobile" class="col-xs-10 col-sm-5" />
-										</div>
-									</div>
-                                        
-                                         <div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Owner's Email </label>
-
-										<div class="col-sm-9">
-											<input type="number" id="form-field-1" placeholder="Enter Owner's Email" class="col-xs-10 col-sm-5" />
-										</div>
-									</div>
-                                        
-                                         <div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Featured Photo </label>
-
-										<div class="col-sm-9">
-                                            <input type="file" class="col-xs-10 col-sm-5" name="featured_photo">
-										</div>
-									</div>
-                                        
-                                        <div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Additional Photos </label>
-
-										<div class="col-sm-9">
-                                            <input type="file" class="col-xs-10 col-sm-5" name="add_photo_1">
-										</div>
-									</div>
-                                        
-                                        <div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Additional Photo </label>
-
-										<div class="col-sm-9">
-                                            <input type="file" class="col-xs-10 col-sm-5" name="add_photo_2">
-										</div>
-									</div>
-                                        
-                                        <div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Additional Photo </label>
-										<div class="col-sm-9">
-                                            <input type="file" class="col-xs-10 col-sm-5" name="add_photo_3">
-										</div>
-									</div>
-                                        
-                                        <div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Additional Photo </label>
-										<div class="col-sm-9">
-                                            <input type="file" class="col-xs-10 col-sm-5" name="add_photo_4">
-										</div>
-									</div>
-                                        
-                                        <div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Invoice Document </label>
-										<div class="col-sm-9">
-                                            <input type="file" class="col-xs-10 col-sm-5" name="invoice_doc">
-										</div>
-									</div>
-                                        
-                                        <div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Insurance Document </label>
-										<div class="col-sm-9">
-                                            <input type="file" class="col-xs-10 col-sm-5" name="insurance_doc">
-										</div>
-									</div>
-                                        
-                                        <div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Fitness Document </label>
-										<div class="col-sm-9">
-                                            <input type="file" class="col-xs-10 col-sm-5" name="fitness_doc">
-										</div>
-									</div>
-                                        
-                                        <div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> RC Document </label>
-										<div class="col-sm-9">
-                                            <input type="file" class="col-xs-10 col-sm-5" name="rc_doc">
-										</div>
-									</div>
-                                        
-                                        <div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> POC Document </label>
-										<div class="col-sm-9">
-                                            <input type="file" class="col-xs-10 col-sm-5" name="poc_doc">
-										</div>
-									</div>
-                                        <div id="add_new_user" style="display:none">
+								<div>
                                     <form class="form-horizontal" role="form">
 									<div class="form-group">
 										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Category </label>
@@ -791,10 +523,9 @@
 											</button>
 										</div>
 									</div>
-
                                     </form>
                                     </div>
-                                    </div>
+                                    
                                     
                                     
                                     
@@ -805,36 +536,7 @@
 								<!-- PAGE CONTENT ENDS -->
 							</div><!-- /.col -->
 						</div><!-- /.row -->
-                        
-                        			<br>
-						
-						  <div class="row">
-                        <div class="col-xs-12">
-                            <div id="registered_user" style="display:none;">
-                            <form class="form-horizontal" role="form" action = "/admin_add_equipment_reg" method = "post">
-                                <div class="form-group">
-										<label class="col-sm-5 control-label no-padding-right" for="form-field-1"> Enter Mobile Number </label>
-
-										<div class="col-sm-7">
-											<!--<input type="number" class="col-sm-5 col-xs-10" placeholder="Enter Mobile Number" maxlength="10" minlength="10">-->
-                                            <input name="phone_number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" type = "number" maxlength = "10" class="col-sm-5 col-xs-10"/>
-										</div>
-									</div>
-                                 <div class="form-group center-block text-center">
-										<button type="submit" class="btn btn-primary btn-login center-block text-center">Submit</button>
-									</div>
-
-                                
-                                </form>
-                            </div>
-                            </div>
-                        </div>
-                        
-                        
-                        
-                        
-                        
-                        
+                     
                         
                         
 					</div><!-- /.page-content -->
@@ -870,7 +572,6 @@
             
         
         </div><!--end col 8 here-->
-        
         
         
         
@@ -921,7 +622,11 @@
 		<!-- ace scripts -->
 		<script src="assets/js/ace-elements.min.js"></script>
 		<script src="assets/js/ace.min.js"></script>
-
+        
+        <!--city state scripts-->
+<script src="assets/js/state.js" type="text/javascript"></script>
+<script src="assets/js/stat-jquery.js" type="text/javascript"></script>
+        
 		<!-- inline scripts related to this page -->
 		<script type="text/javascript">
 			jQuery(function($) {
@@ -1359,25 +1064,9 @@
 			});
 		</script>
     <!--choose state js-->
-   <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <script type="text/javascript">
-$(document).ready(function() {
-  $("#register_btn").click(function() {
-    $("#registered_user").show();
-      $("#add_new_user").hide();
-      
-  });
-});
-</script>
-<script>
-    $(document).ready(function() {
- $("#new_btn").click(function() {
-     $("registered_user").hide();
-    $("#add_new_user").show();
-  });
-    });
-</script>
-    
+
+
+
     <!--end choose state js-->
     </body>
 </html>

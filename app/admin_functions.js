@@ -432,7 +432,7 @@ module.exports = {
             if (err1) throw err1;
             if(!rows1.length){
                 var insertQuery = "INSERT INTO equipment_type (category, subcategory) values (?,?)";
-                    connection.query(insertQuery,[req.body.category, req.body.subcategory],function(err){ 
+                connection.query(insertQuery,[req.body.category, req.body.subcategory],function(err){ 
                         if (err) throw err;
                         else res.render("Added new Equipment type");
                 });
@@ -481,8 +481,6 @@ module.exports = {
     },
 
     
-
-    
     unavailable: function(req,res){
         connection.query("UPDATE all_equipment SET available = 0 WHERE id = ?",[req.params.id], function(err, rows){
             if(err) throw err;
@@ -513,21 +511,21 @@ module.exports = {
 
     get_add_equipment : function(req,res){
         res.render("./admin_add_equipment_user.ejs");
-    }
+    },
 
     post_add_equipment_reg: function(req,res){
         req.session.owner_id = req.body.owner_id;
         res.render('./admin_add_equipment.ejs', {msg : msg, cat_rows:cat_rows});                             
     },
     
-    post_add_equipment_new: function(req,res){
-        var user = {
-            name : req.body.name,
-            mobile : req.body.mobile,
-            email : '' 
-        };
-        return next();
-        },
+    // post_add_equipment_new: function(req,res){
+    //     var user = {
+    //         name : req.body.name,
+    //         mobile : req.body.mobile,
+    //         email : '' 
+    //     };
+    //     return next();
+    //     },
       
     get_add_equipment_category: function(req,res){
         var cat_selected = req.query.category;
