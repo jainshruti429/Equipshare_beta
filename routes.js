@@ -46,10 +46,7 @@ module.exports = function(app, passport) {
     app.post('/search',general_functions.search);
     app.post('/view:id', general_functions.view);
     app.post('/email', general_functions.email, general_functions.index);
-    app.get('/csv', function(req,res){
-        res.render("./csv.ejs", {msg: ''});
-    });
-    app.post('/csv', csv.csv);
+    
     
 // =======================================================================================
 // =========================== USER FUNCTIONS ================================================== 
@@ -148,13 +145,15 @@ module.exports = function(app, passport) {
             else next();
         });
     },admin_functions.available, admin_functions.get_add_featured);
+    
     app.get('/admin_view_equipment', general_functions.isLoggedInfunc,admin_access, admin_functions.available, admin_functions.view_equipment); 
     app.get('/admin_view_all_equipments', general_functions.isLoggedInfunc, admin_access, admin_functions.view_all_equipments);
     app.get('/admin_my_equipment', general_functions.isLoggedInfunc,admin_access,admin_functions.my_equipment);    
     
+    app.get('/admin_add_equipment',general_functions.isLoggedInfunc,admin_access, admin_functions.get_add_equipment);
+    app.post('/admin_add_equipment', general_functions.isLoggedInfunc,admin_access, admin_functions.post_add_equipment);
     app.get('/admin_add_new_admin', general_functions.isLoggedInfunc, admin_access, admin_functions.get_add_new_admin);
     app.post('/admin_add_new_admin', general_functions.isLoggedInfunc, admin_access, admin_functions.post_add_new_admin);
-    app.get('/admin_homepage', general_functions.isLoggedInfunc, admin_access, admin_functions.home);
     app.get("/admin_add_equipment_type",general_functions.isLoggedInfunc, admin_access,admin_functions.get_add_equipment_type);
 	app.post("/admin_add_equipment_type",general_functions.isLoggedInfunc, admin_access, admin_functions.post_add_equipment_type);
     app.get("/admin_unavailable:id", general_functions.isLoggedInfunc, admin_access,admin_functions.unavailable);
@@ -164,12 +163,12 @@ module.exports = function(app, passport) {
     app.post('/admin_reset_password', general_functions.isLoggedInfunc,admin_access, admin_functions.post_reset_password);
     app.get('/admin_update_equipment:id',general_functions.isLoggedInfunc,admin_access, admin_functions.get_update_this_equipment);
     app.post('/admin_update_equipment:id', general_functions.isLoggedInfunc,admin_access, admin_functions.post_update_this_equipment);
-    app.get('/admin_add_equipment',general_functions.isLoggedInfunc,admin_access, admin_functions.get_add_equipment);
-    app.post('/admin_add_equipment', general_functions.isLoggedInfunc,admin_access, admin_functions.post_add_equipment);
     app.get('/admin_update_profile',general_functions.isLoggedInfunc,admin_access, admin_functions.get_update_profile);
     app.post('/admin_update_profile', general_functions.isLoggedInfunc,admin_access, admin_functions.post_update_profile);
-    
-    app.get('/admin_user_view', general_functions.isLoggedInfunc, admin_access, general_functions.index);
+    app.get('/csv', function(req,res){
+        res.render("./csv.ejs", {msg: ''});
+    });
+    app.post('/csv', csv.csv);
     app.get('/admin_logout',general_functions.isLoggedInfunc,admin_access, general_functions.logoutfunc);
 };
 

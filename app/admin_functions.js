@@ -151,7 +151,6 @@ module.exports = {
                 }
                 str = str.slice(0,-1);
                 str = str +")";
-                console.log(str);
                 connection.query(str, function(err2,rows2){
                     if(err2) throw err2;
                     else{
@@ -178,8 +177,6 @@ module.exports = {
                                 feat_details[2] = rows2[0];   
                             }
                         }
-                        console.log(featured);
-                        console.log(feat_details);
                         return next();
                     }
                 });
@@ -522,7 +519,7 @@ module.exports = {
         else msg = 'Please enter the following details';
         connection.query("SELECT DISTINCT subcategory FROM equipment_type WHERE category = ?",[cat_rows[0].category], function(err1, subcat_rows){
             if (err1) throw err1;
-            else res.render('./user_add_equipment.ejs', {msg : msg, cat_rows:cat_rows, isLoggedIn : isLoggedIn(req,res), username: req.session.name});                             
+            else res.render('./admin_add_equipment.ejs', {msg : msg, cat_rows:cat_rows});                             
         });
     },
 
