@@ -14,6 +14,7 @@ var morgan = require('morgan'); // to log everything
 var fileUpload = require('express-fileupload');
 var path = require('path');
 var configDB = require('./config/database.js'); // including database config
+var html = require('html');
 //==============================================================
 
 require('./config/passport.js')(passport); // passport for configuration
@@ -24,6 +25,7 @@ app.use(express.static(path.join(__dirname,'/docs')));
 app.use(express.static(path.join(__dirname, "/images")));
 app.use(express.static(path.join(__dirname, "/public")));
 app.use(express.static(path.join(__dirname, "/")));
+
 app.use(fileUpload());
 
 app.use(morgan('dev')); // log every request to the console

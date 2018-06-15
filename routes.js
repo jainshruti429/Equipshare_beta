@@ -37,6 +37,9 @@ module.exports = function(app, passport) {
 
     //these functions do not require user to be logged in
     //HOME PAGE of website.... 
+    // app.get('/', function(req,res){
+    //     res.sendFile(__dirname+'/views/something.html');  
+    // });
     app.get('/', general_functions.index);
     app.post('/featured:id',general_functions.featured);
     app.get('/search_category', general_functions.search_category);
