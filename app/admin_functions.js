@@ -90,7 +90,6 @@ module.exports = {
                         connection.query(str, function(err2,rows2){
                             if(err2) throw err2;
                             else{
-                                var data = [];
                                 for(var i =0; i<rows.length; i++){
                                     data[i] = {
                                         views : '',
@@ -103,7 +102,7 @@ module.exports = {
                                             break;
                                         }
                                     }
-                                    if(!data[i].views) data.views = 0;
+                                    if(!data[i].views) data[i].views = 0;
                                     
                                     for(var j = 0 ; j <rows2.length; j++){
                                         if(rows[i].id == rows2[j].equip_id){
@@ -224,8 +223,99 @@ module.exports = {
     },
 
     view_equipment: function(req , res){
-        res.render("./admin_view_equipment.ejs", {datarows:datarows, data:data});
+        res.render("./admin_view_equipment.ejs", {datarows:datarows, data:data, available : 1});
     },
+
+    view_all_equipments: function(req , res){
+        str4 = "SELECT all_equipment.id, all_equipment.category, all_equipment.subcategory, all_equipment.brand, all_equipment.model,all_equipment.expected_price,account.name, account.address1, account.address2, account.address3, account.city, account.state, account.zipcode, account.email, account.mobile FROM account INNER JOIN all_equipment ON all_equipment.owner_id = account.id WHERE all_equipment.available=0"
+        connection.query(str4,function(err, rows){
+            if (err) throw err;
+            else{
+                var str4 = "SELECT views.equip_id, count(views.equip_id) as no_views FROM views INNER JOIN all_equipment ON all_equipment.id = views.equip_id WHERE all_equipment.available = 0 GROUP BY views.equip_id";
+                connection.query(str4, function(err1,rows1){
+                    if(err1) throw err1;
+                    else{
+                        str4 = "SELECT requests.equip_id, count(requests.equip_id) as no_requests FROM requests INNER JOIN all_equipment ON all_equipment.id = requests.equip_id WHERE all_equipment.available = 0 GROUP BY requests.equip_id";
+                        connection.query(str4, function(err2,rows2){
+                            if(err2) throw err2;
+                            else{
+                                var info = [];
+                                for(var i =0; i<rows.length; i++){
+                                    info[i] = {
+                                        views : '',
+                                        requests: ''
+                                    }
+
+                                    for(var j = 0 ; j <rows1.length; j++){
+                                        if(rows[i].id == rows1[j].equip_id){
+                                            info[i].views = rows1[j].no_views;
+                                            break;
+                                        }
+                                    }
+                                    if(!info[i].views) info[i].views = 0;
+                                    
+                                    for(var j = 0 ; j <rows2.length; j++){
+                                        if(rows[i].id == rows2[j].equip_id){
+                                            info[i].requests = rows2[j].no_requests;
+                                            break;
+                                        }
+                                    }
+                                    if(!info[i].requests) info[i].requests = 0;
+                                } 
+                                res.render("./admin_view_equipment.ejs", {datarows:rows, data:info, available : 0});
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    },
+
+    my_equipment: function(req , res){
+        str4 = "SELECT all_equipment.id, all_equipment.category, all_equipment.subcategory, all_equipment.brand, all_equipment.model,all_equipment.expected_price,account.name, account.address1, account.address2, account.address3, account.city, account.state, account.zipcode, account.email, account.mobile FROM account INNER JOIN all_equipment ON all_equipment.owner_id = account.id WHERE all_equipment.owner_id = ?"
+        connection.query(str4, [req.session.user] , function(err, rows){
+            if (err) throw err;
+            else{
+                var str4 = "SELECT views.equip_id, count(views.equip_id) as no_views FROM views INNER JOIN all_equipment ON all_equipment.id = views.equip_id WHERE all_equipment.available = 0 GROUP BY views.equip_id";
+                connection.query(str4, function(err1,rows1){
+                    if(err1) throw err1;
+                    else{
+                        str4 = "SELECT requests.equip_id, count(requests.equip_id) as no_requests FROM requests INNER JOIN all_equipment ON all_equipment.id = requests.equip_id WHERE all_equipment.available = 0 GROUP BY requests.equip_id";
+                        connection.query(str4, function(err2,rows2){
+                            if(err2) throw err2;
+                            else{
+                                var info = [];
+                                for(var i =0; i<rows.length; i++){
+                                    info[i] = {
+                                        views : '',
+                                        requests: ''
+                                    }
+
+                                    for(var j = 0 ; j <rows1.length; j++){
+                                        if(rows[i].id == rows1[j].equip_id){
+                                            info[i].views = rows1[j].no_views;
+                                            break;
+                                        }
+                                    }
+                                    if(!info[i].views) info[i].views = 0;
+                                    
+                                    for(var j = 0 ; j <rows2.length; j++){
+                                        if(rows[i].id == rows2[j].equip_id){
+                                            info[i].requests = rows2[j].no_requests;
+                                            break;
+                                        }
+                                    }
+                                    if(!info[i].requests) info[i].requests = 0;
+                                } 
+                                res.render("./admin_my_equipment.ejs", {datarows:rows, data:info});
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    },
+
 
     get_reset_password : function(req,res){
         res.render("./reset_password.ejs", {msg:''});
@@ -267,13 +357,7 @@ module.exports = {
 
     },
 
-    my_equipment: function(req , res){
-        connection.query("SELECT subcategory,brand,model,expected_price,owner_name,state     FROM all_equipment WHERE owner_id = ?" ,[req.session.user],function(err,rows){
-            if (err) throw err ; 
-            else res.render('./admin_my_equipment.ejs' , {datarows: rows});
-        });
-    },
-
+    
     inquiry : function(req, res){
         connection.query("SELECT * FROM emails WHERE resolved = 0",function(err,rows){
             if(err) throw err;
@@ -390,12 +474,7 @@ module.exports = {
         });
     },
 
-    view_all_equipments: function(req , res){
-        connection.query("SELECT * FROM all_equipment",function(err,rows){
-            if (err) throw err; 
-            else res.render('./Profiles/admin/view_all_equipments.ejs' , {datarows: rows});
-        });
-    },
+    
 
     
     unavailable: function(req,res){

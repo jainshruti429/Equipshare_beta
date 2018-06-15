@@ -146,10 +146,9 @@ module.exports = function(app, passport) {
         });
     },admin_functions.available, admin_functions.get_add_featured);
     app.get('/admin_view_equipment', general_functions.isLoggedInfunc,admin_access, admin_functions.available, admin_functions.view_equipment); 
-    
-
     app.get('/admin_view_all_equipments', general_functions.isLoggedInfunc, admin_access, admin_functions.view_all_equipments);
     app.get('/admin_my_equipment', general_functions.isLoggedInfunc,admin_access,admin_functions.my_equipment);    
+    
     app.get('/admin_add_new_admin', general_functions.isLoggedInfunc, admin_access, admin_functions.get_add_new_admin);
     app.post('/admin_add_new_admin', general_functions.isLoggedInfunc, admin_access, admin_functions.post_add_new_admin);
     app.get('/admin_homepage', general_functions.isLoggedInfunc, admin_access, admin_functions.home);
