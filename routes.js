@@ -162,10 +162,10 @@ module.exports = function(app, passport) {
     //         }, admin_functions.post_add_equipment_reg);
 
     app.post('/admin_add_equipment', general_functions.isLoggedInfunc,admin_access, admin_functions.post_add_equipment);
-    app.get('/admin_add_new_admin', general_functions.isLoggedInfunc, admin_access, admin_functions.get_add_new_admin);
-    app.post('/admin_add_new_admin', general_functions.isLoggedInfunc, admin_access, admin_functions.post_add_new_admin);
+    // app.get('/admin_add_new_admin', general_functions.isLoggedInfunc, admin_access, admin_functions.get_add_new_admin);
+    // app.post('/admin_add_new_admin', general_functions.isLoggedInfunc, admin_access, admin_functions.post_add_new_admin);
     app.get("/admin_add_equipment_type",general_functions.isLoggedInfunc, admin_access,admin_functions.get_add_equipment_type);
-	app.post("/admin_add_equipment_type",general_functions.isLoggedInfunc, admin_access, admin_functions.post_add_equipment_type);
+	app.post("/admin_add_equipment_type",general_functions.isLoggedInfunc, admin_access, admin_functions.post_add_equipment_type, admin_functions.get_add_equipment_type);
     app.get("/admin_unavailable:id", general_functions.isLoggedInfunc, admin_access,admin_functions.unavailable, admin_functions.view_equipment);
     app.get('/admin_views:equip_id', general_functions.isLoggedInfunc,admin_access, admin_functions.views);
     app.get('/admin_requests:equip_id', general_functions.isLoggedInfunc,admin_access, admin_functions.requests);

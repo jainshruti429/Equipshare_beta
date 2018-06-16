@@ -390,55 +390,86 @@ module.exports = {
         });
     },
 
-    get_add_new_admin: function(req,res){
-    	res.render('./Profiles/admin/add_new_admin.ejs', {msg: 'Enter the following details' , username:req.session.name});
-    },
+    // get_add_new_admin: function(req,res){
+    // 	res.render('./Profiles/admin/add_new_admin.ejs', {msg: 'Enter the following details' , username:req.session.name});
+    // },
 
-    post_add_new_admin: function(req,res){
-    	if(req.body.password == req.body.retype_password){
-        connection.query("SELECT * FROM account WHERE name = ?",[req.body.name], function(err, rows) {
-            if (err) throw err;
-            if (rows.length) res.render('./Profiles/admin/add_new_admin.ejs', {msg: 'That name is already taken' });
-            else {
-   	            // insert data into account table
-                var newAdmin = {
-                        name: req.body.name,
-                        password: bcrypt.hashSync(req.body.password, null, null),  // use the generateHash function in our user model
-                        category: 0,
-                        email: req.body.email,
-                        mobile: req.body.mobile
-                    };
-                var insertQuery1 = "INSERT INTO account ( name, email, mobile, category, password) values (?,?,?,?,?)";
-                connection.query(insertQuery1,[newAdmin.name, newAdmin.email, newAdmin.mobile,newAdmin.category,newAdmin.password,], function(err) {
-                    if (err) throw err;
-    				else res.render('./Profiles/admin/homepage.ejs' ,{msg:'Admin '+req.body.name+ ' added'});
-	            });
-            }
-        });
-        }
-        else res.render('./Profiles/admin/add_new_admin.ejs', {msg:'Passwords do not match'});
-    },
+    // post_add_new_admin: function(req,res){
+    // 	if(req.body.password == req.body.retype_password){
+    //     connection.query("SELECT * FROM account WHERE name = ?",[req.body.name], function(err, rows) {
+    //         if (err) throw err;
+    //         if (rows.length) res.render('./Profiles/admin/add_new_admin.ejs', {msg: 'That name is already taken' });
+    //         else {
+   	//             // insert data into account table
+    //             var newAdmin = {
+    //                     name: req.body.name,
+    //                     password: bcrypt.hashSync(req.body.password, null, null),  // use the generateHash function in our user model
+    //                     category: 0,
+    //                     email: req.body.email,
+    //                     mobile: req.body.mobile
+    //                 };
+    //             var insertQuery1 = "INSERT INTO account ( name, email, mobile, category, password) values (?,?,?,?,?)";
+    //             connection.query(insertQuery1,[newAdmin.name, newAdmin.email, newAdmin.mobile,newAdmin.category,newAdmin.password,], function(err) {
+    //                 if (err) throw err;
+    // 				else res.render('./Profiles/admin/homepage.ejs' ,{msg:'Admin '+req.body.name+ ' added'});
+	   //          });
+    //         }
+    //     });
+    //     }
+    //     else res.render('./Profiles/admin/add_new_admin.ejs', {msg:'Passwords do not match'});
+    // },
 
     home:function(req, res) {
         res.render('./admin_index.ejs', {username : req.session.name});
     },
     
     get_add_equipment_type : function(req,res){
-        res.render('./Profiles/admin/add_equipment_type.ejs');
+        res.render('./admin_add_equipment_type.ejs', {username:req.session.name});
     },
 
-    post_add_equipment_type :  function(req,res){
-        connection.query("SELECT * FROM equipment_type WHERE (category = ? AND subcategory = ? AND brand = ? AND model = ?)",[req.body.category, req.body.subcategory, req.body.brand, req.body.model], function(err1, rows1) {
-            if (err1) throw err1;
-            if(!rows1.length){
-                var insertQuery = "INSERT INTO equipment_type (category, subcategory) values (?,?)";
-                connection.query(insertQuery,[req.body.category, req.body.subcategory],function(err){ 
-                        if (err) throw err;
-                        else res.render();
+    post_add_equipment_type :  function(req,res, next){
+        connection.query("SELECT id FROM all_equipment WHERE category = ? AND subcategory = ? AND brand = ? AND model = ?", [req.body.category,req.body.subcategory,req.body.brand,req.body.model], function(err,rows){
+            if (err) throw err;
+            else if(rows.length) return next();
+            else{    
+                var radicle = '';
+                connection.query("SELECT id FROM all_equipment ORDER BY id ASC", function(err,rows){
+                    if(err) throw err;
+                    else {
+                        if(rows.length) radicle = rows.slice(-1)[0].id + 1;
+                        else radicle = 1;
+
+                        radicle = "t" + radicle;
+                        var doc = [];
+                        var docname = [];
+                        var resultd = [];
+                        var doc_name = [];
+
+                        doc[1] = req.files.doc1;
+                        doc[2] = req.files.doc2;
+                        
+                        for(var i = 1; i<3 ; i++){
+                            if(doc[i]){
+                                docname[i] = doc[i].name;
+                                resultd[i] = docname[i].split('.');
+                                doc_name[i] = radicle+'_'+i+'.'+resultd[i].slice(-1) ;
+                                doc[i].mv('docs/'+doc_name[i] , function(err3){           
+                                    if (err3) throw(err3);
+                                });
+                            }
+                            else doc_name[i] = '';
+                        }
+
+                        var insertQuery = "INSERT INTO equipment_type (category, subcategory, brand,model,mapping_unit, max_dig_depth, engine_power, loader_capacity, showel_capacity, backhoe_bucket_capacity,weight, blade_capacity, doc1,doc2 ) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                        connection.query(insertQuery,[req.body.category, req.body.subcategory, req.body.brand,req.body.model,req.body.mapping_unit, req.body.max_dig_depth, req.body.engine_power, req.body.loader_capacity, req.body.showel_capacity, req.body.backhoe_bucket_capacity,req.body.weight, req.body.blade_capacity, doc_name[1],doc_name[2]],function(err){ 
+                                if (err) throw err;
+                                else next();
+                        });
+                    }
                 });
             }
         });
-    },  
+    },          
     
     views:  function(req, res){    
         connection.query("SELECT * FROM views WHERE equip_id = ?",[req.params.equip_id], function(err,rows){

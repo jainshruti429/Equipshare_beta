@@ -117,19 +117,12 @@
 								<!-- PAGE CONTENT BEGINS -->
 								
 								<div>
-                                    <form class="form-horizontal" role="form">
+                                    <form class="form-horizontal" role="form" enctype="multipart/form-data" method = "post" action = "/admin_add_equipment_type">
 									<div class="form-group">
 										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Category </label>
 
 										<div class="col-sm-9">
-											<select class="col-xs-10 col-sm-7" required>
-                                            <option></option>    
-                                            <option>Category1</option>    
-                                            <option>Category2</option>    
-                                            <option>Category3</option>    
-                                            <option>Category4</option>    
-                                            <option>Category5</option>    
-                                            </select>
+											<input class="input-sm" type="text" id="form-field-4" placeholder=".input-sm" name = "category" required/>
 										</div>
 									</div>
 
@@ -137,14 +130,7 @@
 										<label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> Sub Category </label>
 
 										<div class="col-sm-9">
-											<select class="form-cntrol col-xs-10 col-sm-7" required>
-                                                 <option></option>    
-                                            <option>Category1</option>    
-                                            <option>Category2</option>    
-                                            <option>Category3</option>    
-                                            <option>Category4</option>    
-                                            <option>Category5</option> 
-                                            </select>
+											<input class="input-sm" type="text" id="form-field-4" placeholder=".input-sm" name = "subcategory" required/>
 										</div>
 									</div>
 
@@ -154,14 +140,7 @@
 										<label class="col-sm-3 control-label no-padding-right" for="form-field-2"> Brand </label>
 
 										<div class="col-sm-9">
-											<select class="form-cntrol col-xs-10 col-sm-7" required>
-                                                 <option></option>    
-                                            <option>Brand 1</option>    
-                                            <option>Brand 2</option>    
-                                            <option>Brand 3</option>    
-                                            <option>Brand 4</option>    
-                                            <option>Brand 5</option> 
-                                            </select>
+											<input class="input-sm" type="text" id="form-field-4" placeholder=".input-sm" name = "brand" required/>
 										</div>
 									</div>
 
@@ -171,14 +150,7 @@
 										<label class="col-sm-3 control-label no-padding-right" for="form-input-readonly"> Model </label>
 
 										<div class="col-sm-9">
-											<select class="form-cntrol col-xs-10 col-sm-7" required>
-                                                 <option></option>    
-                                            <option>Model 1</option>    
-                                            <option>Model 2</option>    
-                                            <option>Model 3</option>    
-                                            <option>Model 4</option>    
-                                            <option>Model 5</option> 
-                                            </select>
+											<input class="input-sm" type="text" id="form-field-4" placeholder=".input-sm" name = "model" required/>
 										</div>
 									</div>
 
@@ -208,12 +180,19 @@
 											<div class="help-block" id="input-span-slider"></div>
 										</div>
 									</div>-->
-                                        
+                                        <div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Mapping Unit </label>
+
+										<div class="col-sm-9">
+											<input type="text" id="form-field-1" placeholder="Enter Mapping Unit" class="col-xs-10 col-sm-7" name = "mapping_unit"/>
+										</div>
+									</div>
+
                                         <div class="form-group">
 										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Max Dig Depth </label>
 
 										<div class="col-sm-9">
-											<input type="number" id="form-field-1" placeholder="Enter Maximum Dig Depth" class="col-xs-10 col-sm-7" required/>
+											<input type="text" id="form-field-1" placeholder="Enter Maximum Dig Depth" class="col-xs-10 col-sm-7" name = "max_dig_depth"/>
 										</div>
 									</div>
                                         
@@ -222,7 +201,7 @@
 
 										<div class="col-sm-9">
 											<!--<input type="number" id="form-field-1" placeholder="Enter Year" class="col-xs-10 col-sm-7" />-->
-                                           <input type="text" id="form-field-1" placeholder="Enter Engine Power" class="col-xs-10 col-sm-7" required/>
+                                           <input type="text" id="form-field-1" placeholder="Enter Engine Power" class="col-xs-10 col-sm-7" name = "engine_power" required/>
 										</div>
 									</div>
                                         
@@ -230,7 +209,7 @@
 										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Loader Capacity </label>
 
 										<div class="col-sm-9">
-											<input type="text" id="form-field-1" placeholder="Enter Loader Capacity" class="col-xs-10 col-sm-7" required/>
+											<input type="text" id="form-field-1" placeholder="Enter Loader Capacity" class="col-xs-10 col-sm-7" name = "loader_capacity"/>
 										</div>
 									</div>
                                         
@@ -238,28 +217,28 @@
 										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Showel Capacity </label>
 
 										<div class="col-sm-9">
-											<input type="text" id="form-field-1" placeholder="Enter Showel Capacity" class="col-xs-10 col-sm-7" required/>
+											<input type="text" id="form-field-1" placeholder="Enter Showel Capacity" class="col-xs-10 col-sm-7" name = "showel_capacity"/>
 										</div>
 									</div>
                                         
                                          <div class="form-group">
 										 <label for="inputEmail3" class="col-sm-3 control-label no-padding-right custom-form-name-title">Backhoe Bucket Capacity</label>
 										<div class="col-sm-9">
-											   <input type="text" id="form-field-1" placeholder="Enter Backhoes Bucket Capacity" class="col-xs-10 col-sm-7" required/>
+											   <input type="text" id="form-field-1" placeholder="Enter Backhoes Bucket Capacity" class="col-xs-10 col-sm-7" name = "backhoe_bucket_capacity"/>
 										</div>
 									</div>
                                         
                                         <div class="form-group">
 										 <label for="inputEmail3" class="col-sm-3 control-label no-padding-right custom-form-name-title">Weight</label>
 										<div class="col-sm-9">
-											   <input type="text" id="form-field-1" placeholder="Enter Weight" class="col-xs-10 col-sm-7" required/>
+											   <input type="text" id="form-field-1" placeholder="Enter Weight" class="col-xs-10 col-sm-7" name = "weight" required/>
 										</div>
 									</div>
                                          <div class="form-group">
 										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Blade Capacity </label>
 
 										<div class="col-sm-9">
-											<input type="text" id="form-field-1" placeholder="Enter Blade Capacity" class="col-xs-10 col-sm-7" required/>
+											<input type="text" id="form-field-1" placeholder="Enter Blade Capacity" class="col-xs-10 col-sm-7" name = "blade_capacity"/>
 										</div>
 									</div>
                                         
@@ -267,7 +246,7 @@
 										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Document 1 </label>
 
 										<div class="col-sm-9">
-                                            <input type="file" class="col-xs-10 col-sm-7" name="doc_1" required>
+                                            <input type="file" class="col-xs-10 col-sm-7" name="doc1" required>
 										</div>
 									</div>
                                         
@@ -275,7 +254,7 @@
 										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Document 2 </label>
 
 										<div class="col-sm-9">
-                                            <input type="file" class="col-xs-10 col-sm-7" name="doc_2" required>
+                                            <input type="file" class="col-xs-10 col-sm-7" name="doc2" required>
 										</div>
 									</div>
                                         
