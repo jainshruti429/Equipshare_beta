@@ -474,43 +474,42 @@ module.exports = {
     views:  function(req, res){    
         connection.query("SELECT * FROM views WHERE equip_id = ?",[req.params.equip_id], function(err,rows){
             if (err) throw err;
-            if(rows.length){
-                var str = "SELECT * FROM account WHERE (id = ";
-                str += rows[0].viewer_id;
-                for(var i = 1; i< rows.length; i++){
-                    str += " OR id =";
-                    str+= rows[i].viewer_id;
+            else if(rows.length){
+                var str = "SELECT * FROM account WHERE id IN ( ";
+                for(var i = 0; i< rows.length; i++){
+                    str= str + rows[i].viewer_id + ",";
                 }
-                str += ")"; 
+                str = str.slice(0,-1);
+                str = str +")";
                 connection.query(str, function(err1, row1){
                     if(err1) throw err1;
-                    else res.render("./Profiles/user/viewers.ejs", {data_row:row1});
+                    else res.render("./admin_view_table.ejs", {datarows:row1, username:req.session.name});
                 });
             }
-            else res.render('./Profiles/user/homepage.ejs', {msg : 'No Viewers yet'});
+            else res.render("./admin_view_table.ejs", {datarows:[], username:req.session.name});
         });
     },
 
     requests : function(req, res){
          connection.query("SELECT * FROM requests WHERE equip_id = ?",[req.params.equip_id], function(err,rows){
             if (err) throw err;
-            if(rows.length){
-                var str = "SELECT * FROM account WHERE (id = ";
-                str += rows[0].applicant_id;
-                for(var i = 1; i< rows.length; i++){
-                    str += " OR id =";
-                    str+= rows[i].applicant_id;
+            else if(rows.length){
+                var str = "SELECT * FROM account WHERE id IN ( ";
+                for(var i = 0; i< rows.length; i++){
+                    str= str + rows[i].applicant_id + ",";
                 }
-                str += ")"; 
+                str = str.slice(0,-1);
+                str = str +")";
                 connection.query(str, function(err1, row1){
                     if(err1) throw err1;
-                    else res.render("./Profiles/user/applicants.ejs", {data_row:row1});
-                });
+                    else {
+                        console.log(row1);
+                        res.render("./admin_request_table.ejs", {datarows:row1, username:req.session.name});
+                                    }});
             }
-            else res.render('./Profiles/user/homepage.ejs', {msg : 'No Requests yet'});
+            else res.render("./admin_request_table.ejs", {datarows:[], username:req.session.name});
         });
     },
-
     
     unavailable: function(req,res){
         connection.query("UPDATE all_equipment SET available = 0 WHERE id = ?",[req.params.id], function(err, rows){
@@ -540,7 +539,7 @@ module.exports = {
     // },
 
     get_add_equipment : function(req,res){
-        res.render("./admin_add_equipment_user.ejs");
+        res.render("./admin_add_equipment_user.ejs", {username: req.session.name});
     },
 
     post_add_equipment_reg: function(req,res){
