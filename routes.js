@@ -147,19 +147,17 @@ module.exports = function(app, passport) {
     app.get('/admin_view_all_equipments', general_functions.isLoggedInfunc, admin_access, admin_functions.view_all_equipments);
     app.get('/admin_my_equipment', general_functions.isLoggedInfunc,admin_access,admin_functions.my_equipment);        
     app.get('/admin_add_equipment',general_functions.isLoggedInfunc,admin_access, admin_functions.get_add_equipment_user);
-    app.post('/admin_add_equipment_reg', general_functions.isLoggedInfunc, admin_access, admin_functions.get_add_equipment_reg);
-    // app.post('/admin_add_equipment_new', general_functions.isLoggedInfunc, admin_access, function(req,res,next){
-    //             passport.authenticate('local-signup', function (err, user, info) {
-    //             //this function is called when LocalStrategy returns done function with parameters
-    //             if(err) return res.render('./user_login.ejs', {msg : 'Please Try Again!', id:req.params.id});    
-    //             //if username or password doesn't match
-    //             if(!user) return res.render('./user_signup.ejs', {msg:info.message});
-    //             if (req.body.password != req.body.retype_password) return res.render('./user_signup.ejs',{msg:'passwords did not match', id:req.params.id});
-    //             //if (!req.body.agree) return res.render('./user_signup.ejs',{msg:'You need to agree to TnC'});          
-    //             //this is when signup is successful
-    //             else return res.render('./user_login.ejs',{msg:'Signup successful! Login to continue', login_para:1, id:req.params.id });
-    //         })(req,res,next);
-    //         }, admin_functions.post_add_equipment_reg);
+    app.post('/admin_add_equipment_reg', general_functions.isLoggedInfunc, admin_access, admin_functions.post_add_equipment_reg, admin_functions.get_add_equipment);
+    app.post('/admin_add_equipment_new', general_functions.isLoggedInfunc, admin_access, function(req,res,next){
+                passport.authenticate('local-signup', function (err, user, info) {
+                //this function is called when LocalStrategy returns done function with parameters
+                if(err) return next();    
+                //if username or password doesn't match
+                if(!user) return next();
+                //this is when signup is successful
+                else return admin_functions.get_add_equipment(req,res);
+            })(req,res,next);
+            }, admin_functions.get_add_equipment_user);
 
     app.post('/admin_add_equipment', general_functions.isLoggedInfunc,admin_access, admin_functions.post_add_equipment);
     // app.get('/admin_add_new_admin', general_functions.isLoggedInfunc, admin_access, admin_functions.get_add_new_admin);
@@ -176,7 +174,7 @@ module.exports = function(app, passport) {
     // app.get('/admin_update_profile',general_functions.isLoggedInfunc,admin_access, admin_functions.get_update_profile);
     // app.post('/admin_update_profile', general_functions.isLoggedInfunc,admin_access, admin_functions.post_update_profile);
     app.get('/csv', function(req,res){
-        res.render("./csv.ejs", {msg: ''});
+        res.render("./admin_upload_csv.ejs", {msg: '', username: req.session.user});
     });
     app.post('/csv', csv.csv);
 };

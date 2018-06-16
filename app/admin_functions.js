@@ -538,29 +538,24 @@ module.exports = {
     //     });
     // },
 
+    get_add_equipment : function(req,res){
+        res.render('./admin_add_equipment.ejs', {msg : '', cat_rows:cat_rows,username: req.session.name});                             
+    },
+
     get_add_equipment_user : function(req,res){
         res.render("./admin_add_equipment_user.ejs", {username: req.session.name});
     },
 
-    get_add_equipment_reg: function(req,res){
-        connection.query("SELECT owner_id FROM account WHERE mobile = ?", [req.body.mobile], function(err,rows){
+    post_add_equipment_reg: function(req,res, next){
+        connection.query("SELECT id FROM account WHERE mobile = ?", [req.body.mobile], function(err,rows){
             if(err) throw err;
             else if(rows.length){ 
-                req.session.owner_id = rows[0].owner_id;
-                res.render('./admin_add_equipment.ejs', {msg : '', cat_rows:cat_rows,username: req.session.name});                             
+                req.session.owner_id = rows[0].id;
+                return next();
             }
             else res.render("./admin_add_equipment_user.ejs", {username: req.session.name}); 
         });
     },
-    
-    // post_add_equipment_new: function(req,res){
-    //     var user = {
-    //         name : req.body.name,
-    //         mobile : req.body.mobile,
-    //         email : '' 
-    //     };
-    //     return next();
-    //     },
       
     get_add_equipment_category: function(req,res){
         var cat_selected = req.query.category;
