@@ -7,7 +7,22 @@
     <div class="row">
         
       <%- include admin_sidebar.ejs %>
+            <style>
+        .btn-bs-file{
+    position:relative;
+}
+            .btn-bs-file input[type="file"]{
+    position: absolute;
+    top: -9999999;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    width:0;
+    height:0;
+    outline: none;
+    cursor: inherit;
+}
         
+        </style>
         <!--main content begin here-->
         <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12" style="padding:0">
         <div class="main-content">
@@ -124,7 +139,7 @@
                                          <form class="form-horizontal" role="form" method="post" enctype="multipart/form-data">
                                              <div class="form-group text-center center-block">
 										<div class="col-sm-12">
-											<button type="submit" class="btn btn-success btn-reset-pass center-block text-center">UPLOAD CSV</button>
+					 <label class="btn-bs-file btn btn-lg btn-primary center-block text-center">Upload CSV<input type="file" /></label>
 										</div>
 									</div>
                                         
