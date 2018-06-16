@@ -538,13 +538,19 @@ module.exports = {
     //     });
     // },
 
-    get_add_equipment : function(req,res){
+    get_add_equipment_user : function(req,res){
         res.render("./admin_add_equipment_user.ejs", {username: req.session.name});
     },
 
-    post_add_equipment_reg: function(req,res){
-        req.session.owner_id = req.body.owner_id;
-        res.render('./admin_add_equipment.ejs', {msg : msg, cat_rows:cat_rows});                             
+    get_add_equipment_reg: function(req,res){
+        connection.query("SELECT owner_id FROM account WHERE mobile = ?", [req.body.mobile], function(err,rows){
+            if(err) throw err;
+            else if(rows.length){ 
+                req.session.owner_id = rows[0].owner_id;
+                res.render('./admin_add_equipment.ejs', {msg : '', cat_rows:cat_rows,username: req.session.name});                             
+            }
+            else res.render("./admin_add_equipment_user.ejs", {username: req.session.name}); 
+        });
     },
     
     // post_add_equipment_new: function(req,res){

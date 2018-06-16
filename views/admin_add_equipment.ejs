@@ -122,14 +122,12 @@
 										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Category </label>
 
 										<div class="col-sm-9">
-											<select class="col-xs-10 col-sm-7">
-                                            <option></option>    
-                                            <option>Category1</option>    
-                                            <option>Category2</option>    
-                                            <option>Category3</option>    
-                                            <option>Category4</option>    
-                                            <option>Category5</option>    
-                                            </select>
+											<select class="form-cntrol col-xs-10 col-sm-7" name = "category" onchange="if(this.value!= 0) { find_subcategory(this.value); }" id = 'cat' required>
+								<option value="0">Select Category</option>
+                <%for(var i = 0;i< cat_rows.length; i++){%> 
+								  <option value="<%=cat_rows[i].category%>"><%=cat_rows[i].category%> </option>
+							    <%}%>
+							    </select>
 										</div>
 									</div>
 
@@ -137,14 +135,7 @@
 										<label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> Sub Category </label>
 
 										<div class="col-sm-9">
-											<select class="form-cntrol col-xs-10 col-sm-7">
-                                                 <option></option>    
-                                            <option>Category1</option>    
-                                            <option>Category2</option>    
-                                            <option>Category3</option>    
-                                            <option>Category4</option>    
-                                            <option>Category5</option> 
-                                            </select>
+											<select class="form-cntrol col-xs-10 col-sm-7" name = "subcategory" onchange="if(this.value!= 0) { find_brand(this.value); }" list = 'subcat' required></select>
 										</div>
 									</div>
 
@@ -154,14 +145,7 @@
 										<label class="col-sm-3 control-label no-padding-right" for="form-field-2"> Brand </label>
 
 										<div class="col-sm-9">
-											<select class="form-cntrol col-xs-10 col-sm-7">
-                                                 <option></option>    
-                                            <option>Brand 1</option>    
-                                            <option>Brand 2</option>    
-                                            <option>Brand 3</option>    
-                                            <option>Brand 4</option>    
-                                            <option>Brand 5</option> 
-                                            </select>
+											<select class="form-cntrol col-xs-10 col-sm-7" name = "brand" onchange="if(this.value!= 0) { find_model(this.value); }" list = 'brand' required></select>
 										</div>
 									</div>
 
@@ -171,14 +155,7 @@
 										<label class="col-sm-3 control-label no-padding-right" for="form-input-readonly"> Model </label>
 
 										<div class="col-sm-9">
-											<select class="form-cntrol col-xs-10 col-sm-7">
-                                                 <option></option>    
-                                            <option>Model 1</option>    
-                                            <option>Model 2</option>    
-                                            <option>Model 3</option>    
-                                            <option>Model 4</option>    
-                                            <option>Model 5</option> 
-                                            </select>
+											<select id ='model' class = "form-control" name="model"  list="model"  autocomplete="off" required ></select>
 										</div>
 									</div>
 
@@ -1064,7 +1041,91 @@
 			});
 		</script>
     <!--choose state js-->
+ <script>
+function find_subcategory(val){
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && (this.status == 200 || this.status == 304)) {
+  
+  var subcat=new Array();
+  subcat=JSON.parse(this.responseText);
 
+  
+  var select = document.getElementById('subcat');
+       for(var i = select.options.length - 1 ; i > 0 ; i--) {
+         select.remove(i);
+        }
+  
+  for(var i=0;i<subcat.length;i++) { 
+            option = document.createElement('option');
+            option.value =subcat[i].subcategory ;
+            option.text = subcat[i].subcategory ;
+            select.appendChild(option);
+     }
+    }
+  };
+  xhttp.open("GET", "/user_add_equipment_category?category="+val,true);
+  xhttp.send();
+}
+
+
+function find_brand(val){
+
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && (this.status == 200 || this.status == 304)) {
+  
+  var brand=new Array();
+  brand=JSON.parse(this.responseText);
+
+  var select = document.getElementById('brand');
+       for(var i = select.options.length - 1 ; i > 0 ; i--) {
+         select.remove(i);
+}
+  
+  for(var i=0;i<brand.length;i++) { 
+    
+        option = document.createElement('option');
+            option.value =brand[i].brand ;
+            option.text = brand[i].brand ;
+            select.appendChild(option);
+     }
+    }
+  };
+  var category = document.getElementById('cat').value;
+  xhttp.open("GET", "/user_add_equipment_subcategory?subcategory="+val+'&category='+category,true);
+  xhttp.send();
+}
+
+
+function find_model(val){
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && (this.status == 200 || this.status == 304)) {
+  var model=new Array();
+  model=JSON.parse(this.responseText);
+
+  
+  var select = document.getElementById('model');
+       for(var i = select.options.length - 1 ; i > 0 ; i--) {
+         select.remove(i);
+}
+  
+  for(var i=0;i<model.length;i++) { 
+        option = document.createElement('option');
+            option.value =model[i].model ;
+            option.text = model[i].model ;
+            select.appendChild(option);
+     }
+    }
+  };
+  var category = document.getElementById('cat').value;
+  var subcategory = document.getElementById('subcat').value;
+  xhttp.open("GET", "/user_add_equipment_brand?brand="+val+'&category='+category+'&subcategory='+subcategory,true);
+  xhttp.send();
+}
+
+</script>          
 
 
     <!--end choose state js-->

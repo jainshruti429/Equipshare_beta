@@ -146,8 +146,8 @@ module.exports = function(app, passport) {
     app.get('/admin_view_equipment', general_functions.isLoggedInfunc,admin_access, admin_functions.available, admin_functions.view_equipment); 
     app.get('/admin_view_all_equipments', general_functions.isLoggedInfunc, admin_access, admin_functions.view_all_equipments);
     app.get('/admin_my_equipment', general_functions.isLoggedInfunc,admin_access,admin_functions.my_equipment);        
-    app.get('/admin_add_equipment',general_functions.isLoggedInfunc,admin_access, admin_functions.get_add_equipment);
-    app.post('/admin_add_equipment_reg', general_functions.isLoggedInfunc, admin_access, admin_functions.post_add_equipment_reg);
+    app.get('/admin_add_equipment',general_functions.isLoggedInfunc,admin_access, admin_functions.get_add_equipment_user);
+    app.post('/admin_add_equipment_reg', general_functions.isLoggedInfunc, admin_access, admin_functions.get_add_equipment_reg);
     // app.post('/admin_add_equipment_new', general_functions.isLoggedInfunc, admin_access, function(req,res,next){
     //             passport.authenticate('local-signup', function (err, user, info) {
     //             //this function is called when LocalStrategy returns done function with parameters
