@@ -81,7 +81,7 @@ module.exports = {
     available : function(req,res,next){
         datarows = [];
         data = [];
-        str = "SELECT all_equipment.id, all_equipment.category, all_equipment.subcategory, all_equipment.brand, all_equipment.model,all_equipment.expected_price,account.name, account.address1, account.address2, account.address3, account.city, account.state, account.zipcode, account.email, account.mobile FROM account INNER JOIN all_equipment ON all_equipment.owner_id = account.id WHERE available = 1"
+        str = "SELECT all_equipment.id,all_equipment.available, all_equipment.category, all_equipment.subcategory, all_equipment.brand, all_equipment.model,all_equipment.expected_price,account.name, account.address1, account.address2, account.address3, account.city, account.state, account.zipcode, account.email, account.mobile FROM account INNER JOIN all_equipment ON all_equipment.owner_id = account.id WHERE available = 1"
         connection.query(str,function(err, rows){
             if (err) throw err;
             else{
@@ -229,11 +229,11 @@ module.exports = {
     },
 
     view_equipment: function(req , res){
-        res.render("./admin_view_equipment.ejs", {datarows:datarows, data:data, available : 1});
+        res.render("./admin_view_equipment.ejs", {datarows:datarows, data:data, available : 1, my : 0});
     },
 
     view_all_equipments: function(req , res){
-        str4 = "SELECT all_equipment.id, all_equipment.category, all_equipment.subcategory, all_equipment.brand, all_equipment.model,all_equipment.expected_price,account.name, account.address1, account.address2, account.address3, account.city, account.state, account.zipcode, account.email, account.mobile FROM account INNER JOIN all_equipment ON all_equipment.owner_id = account.id WHERE all_equipment.available=0"
+        str4 = "SELECT all_equipment.id,all_equipment.available, all_equipment.category, all_equipment.subcategory, all_equipment.brand, all_equipment.model,all_equipment.expected_price,account.name, account.address1, account.address2, account.address3, account.city, account.state, account.zipcode, account.email, account.mobile FROM account INNER JOIN all_equipment ON all_equipment.owner_id = account.id WHERE all_equipment.available=0"
         connection.query(str4,function(err, rows){
             if (err) throw err;
             else{
@@ -268,7 +268,7 @@ module.exports = {
                                     }
                                     if(!info[i].requests) info[i].requests = 0;
                                 } 
-                                res.render("./admin_view_equipment.ejs", {datarows:rows, data:info, available : 0});
+                                res.render("./admin_view_equipment.ejs", {datarows:rows, data:info, available : 0, my : 0});
                             }
                         });
                     }
@@ -278,7 +278,7 @@ module.exports = {
     },
 
     my_equipment: function(req , res){
-        str4 = "SELECT all_equipment.id, all_equipment.category, all_equipment.subcategory, all_equipment.brand, all_equipment.model,all_equipment.expected_price,account.name, account.address1, account.address2, account.address3, account.city, account.state, account.zipcode, account.email, account.mobile FROM account INNER JOIN all_equipment ON all_equipment.owner_id = account.id WHERE all_equipment.owner_id = ?"
+        str4 = "SELECT all_equipment.id,all_equipment.available, all_equipment.category, all_equipment.subcategory, all_equipment.brand, all_equipment.model,all_equipment.expected_price,account.name, account.address1, account.address2, account.address3, account.city, account.state, account.zipcode, account.email, account.mobile FROM account INNER JOIN all_equipment ON all_equipment.owner_id = account.id WHERE all_equipment.owner_id = ?"
         connection.query(str4, [req.session.user] , function(err, rows){
             if (err) throw err;
             else{
@@ -313,7 +313,7 @@ module.exports = {
                                     }
                                     if(!info[i].requests) info[i].requests = 0;
                                 } 
-                                res.render("./admin_my_equipment.ejs", {datarows:rows, data:info});
+                                res.render("./admin_view_equipment.ejs", {datarows:rows, data:info, available : 1, my : 1 });
                             }
                         });
                     }
