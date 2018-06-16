@@ -185,7 +185,7 @@ module.exports = {
     },
   
     featured: function(req,res){
-        res.render('./admin_featured.ejs' , {featured: featured, feat_details:feat_details, prev_featured : prev_featured, feat_data: feat_data});                
+        res.render('./admin_featured.ejs' , {featured: featured, feat_details:feat_details, prev_featured : prev_featured, feat_data: feat_data, username:req.session.name});                
     },
 
     remove_featured: function(req,res,next){
@@ -204,8 +204,8 @@ module.exports = {
     },
 
     get_add_featured: function(req,res){
-        if(featured.length < 3) res.render("./admin_add_featured.ejs", {featured:featured , feat_data:feat_data, feat_details:feat_details, datarows:datarows, data:data});
-        else res.render('./admin_featured.ejs' , {featured: featured, feat_details:feat_details, prev_featured : prev_featured, feat_data: feat_data});                 
+        if(featured.length < 3) res.render("./admin_add_featured.ejs", {featured:featured , feat_data:feat_data, feat_details:feat_details, datarows:datarows, data:data, username:req.session.name});
+        else res.render('./admin_featured.ejs' , {featured: featured, feat_details:feat_details, prev_featured : prev_featured, feat_data: feat_data, username:req.session.name});                 
     },
 
     post_add_featured: function(req,res, next){
@@ -229,11 +229,11 @@ module.exports = {
     },
 
     view_equipment: function(req , res){
-        res.render("./admin_view_equipment.ejs", {datarows:datarows, data:data, available : 1, my : 0});
+        res.render("./admin_view_equipment.ejs", {datarows:datarows, data:data, my : 0, username:req.session.name});
     },
 
     view_all_equipments: function(req , res){
-        str4 = "SELECT all_equipment.id,all_equipment.available, all_equipment.category, all_equipment.subcategory, all_equipment.brand, all_equipment.model,all_equipment.expected_price,account.name, account.address1, account.address2, account.address3, account.city, account.state, account.zipcode, account.email, account.mobile FROM account INNER JOIN all_equipment ON all_equipment.owner_id = account.id WHERE all_equipment.available=0"
+        str4 = "SELECT all_equipment.id,all_equipment.available, all_equipment.category, all_equipment.subcategory, all_equipment.brand, all_equipment.model,all_equipment.expected_price,account.name, account.address1, account.address2, account.address3, account.city, account.state, account.zipcode, account.email, account.mobile FROM account INNER JOIN all_equipment ON all_equipment.owner_id = account.id"
         connection.query(str4,function(err, rows){
             if (err) throw err;
             else{
@@ -268,7 +268,7 @@ module.exports = {
                                     }
                                     if(!info[i].requests) info[i].requests = 0;
                                 } 
-                                res.render("./admin_view_equipment.ejs", {datarows:rows, data:info, available : 0, my : 0});
+                                res.render("./admin_view_equipment.ejs", {datarows:rows, data:info, my : 0, username:req.session.name});
                             }
                         });
                     }
@@ -313,7 +313,7 @@ module.exports = {
                                     }
                                     if(!info[i].requests) info[i].requests = 0;
                                 } 
-                                res.render("./admin_view_equipment.ejs", {datarows:rows, data:info, available : 1, my : 1 });
+                                res.render("./admin_view_equipment.ejs", {datarows:rows, data:info, my : 1 , username:req.session.name});
                             }
                         });
                     }
@@ -324,20 +324,20 @@ module.exports = {
 
 
     get_reset_password : function(req,res){
-        res.render("./reset_password.ejs", {msg:''});
+        res.render("./admin_reset_password.ejs", {msg:'', username:req.session.name});
     },
 
     post_reset_password : function(req,res, next){
         connection.query("SELECT password FROM account WHERE id = ?",[req.session.user], function(err,rows){
             if(err) throw(err);
             else{
-                if(!bcrypt.compareSync(req.body.old_password, rows[0].password)) return res.render("./user/reset_password.ejs", {msg:'Old Password is incorrect'});
-                if(req.body.new_password != req.body.retype_new_password) return res.render("./user/reset_password.ejs", {msg:'Passwords do not match'});
+                if(!bcrypt.compareSync(req.body.old_password, rows[0].password)) return res.render("./admin_reset_password.ejs", {msg:'Old Password is incorrect', username:req.session.name});
+                if(req.body.new_password != req.body.retype_new_password) return res.render("./admin_reset_password.ejs", {msg:'Passwords do not match', username:req.session.name});
                 else{
                    var new_password = bcrypt.hashSync(req.body.new_password, null, null);
                    connection.query("UPDATE account SET password = ? WHERE id = ?",[new_password,req.session.user], function(err,rows){
                     if(err) throw err;
-                    else res.render("./user/reset_password.ejs", {msg:'Password is changed'});
+                    else next();
                    });     
                 }
             }
@@ -347,7 +347,7 @@ module.exports = {
     get_update_this_equipment: function(req, res){
     connection.query("SELECT * FROM all_equipment WHERE id = ?" ,[req.params.id],function(err,rows){
             if (err) throw err;
-            else res.render('./update.ejs' , {equip_data : rows[0]});
+            else res.render('./update.ejs' , {equip_data : rows[0], username:req.session.name});
         });
     },
     
@@ -370,7 +370,7 @@ module.exports = {
             else {
                 connection.query("SELECT * FROM emails WHERE resolved = 1",function(err1,rows1){
                     if(err1) throw err1;
-                    else res.render('./admin_inquiry.ejs',{current:rows , previous: rows1});
+                    else res.render('./admin_inquiry.ejs',{current:rows , previous: rows1, username:req.session.name});
                 });
             }
         });
@@ -391,7 +391,7 @@ module.exports = {
     },
 
     get_add_new_admin: function(req,res){
-    	res.render('./Profiles/admin/add_new_admin.ejs', {msg: 'Enter the following details' });
+    	res.render('./Profiles/admin/add_new_admin.ejs', {msg: 'Enter the following details' , username:req.session.name});
     },
 
     post_add_new_admin: function(req,res){
@@ -420,7 +420,7 @@ module.exports = {
     },
 
     home:function(req, res) {
-        res.render('./admin_index.ejs', {msg:('Welcome'+req.session.name)});
+        res.render('./admin_index.ejs', {username : req.session.name});
     },
     
     get_add_equipment_type : function(req,res){
@@ -434,7 +434,7 @@ module.exports = {
                 var insertQuery = "INSERT INTO equipment_type (category, subcategory) values (?,?)";
                 connection.query(insertQuery,[req.body.category, req.body.subcategory],function(err){ 
                         if (err) throw err;
-                        else res.render("Added new Equipment type");
+                        else res.render();
                 });
             }
         });
@@ -484,30 +484,29 @@ module.exports = {
     unavailable: function(req,res){
         connection.query("UPDATE all_equipment SET available = 0 WHERE id = ?",[req.params.id], function(err, rows){
             if(err) throw err;
-            else{res.render("./Profiles/admin/homepage.ejs",{msg :"Marked unavailable...."});}
+            else next();
         });
     },
 
+    // get_update_profile:  function(req, res){
+    //     connection.query("SELECT * FROM account WHERE id = ?" ,[req.session.user],function(err,rows){
+    //         if (err) throw err ;
+    //         else res.render('./update_profile.ejs' , {msg : '' , user_data : rows[0]});
+    //     });
+    // },
 
-    get_update_profile:  function(req, res){
-        connection.query("SELECT * FROM account WHERE id = ?" ,[req.session.user],function(err,rows){
-            if (err) throw err ;
-            else res.render('./update_profile.ejs' , {msg : '' , user_data : rows[0]});
-        });
-    },
-
-    post_update_profile :  function(req, res){
-        var updateQuery = "UPDATE account SET email = ?, address = ?, city = ?, state = ?, country = ?, zipcode = ? WHERE id =?";
-        connection.query(updateQuery, [req.body.email, req.body.address, req.body.city, req.body.state, req.body.country, req.body.zipcode, req.session.user],function (err, rows) {
-            if (err) throw err;
-            else {
-                connection.query("SELECT * FROM account WHERE id = ?" ,[req.session.user],function(err1,rows1){
-                    if (err) throw err ;
-                    else res.render('./update_profile.ejs' , {msg : 'Profile Updated' , user_data : rows1[0]});
-                });          
-            }
-        });
-    },
+    // post_update_profile :  function(req, res){
+    //     var updateQuery = "UPDATE account SET email = ?, address = ?, city = ?, state = ?, country = ?, zipcode = ? WHERE id =?";
+    //     connection.query(updateQuery, [req.body.email, req.body.address, req.body.city, req.body.state, req.body.country, req.body.zipcode, req.session.user],function (err, rows) {
+    //         if (err) throw err;
+    //         else {
+    //             connection.query("SELECT * FROM account WHERE id = ?" ,[req.session.user],function(err1,rows1){
+    //                 if (err) throw err ;
+    //                 else res.render('./update_profile.ejs' , {msg : 'Profile Updated' , user_data : rows1[0]});
+    //             });          
+    //         }
+    //     });
+    // },
 
     get_add_equipment : function(req,res){
         res.render("./admin_add_equipment_user.ejs");

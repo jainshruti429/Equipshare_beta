@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta >
-    <title>Dashboardd</title>
+    <title>Equipshare</title>
      <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
     <!--<link href="css/bootstrap.css" rel="stylesheet" type="text/css">-->
     <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
@@ -336,7 +336,7 @@
 								<img class="nav-user-photo" src="assets/images/avatars/user.jpg" alt="Jason's Photo" />
 								<span class="user-info">
 									<small>Welcome,</small>
-									Admin
+									<%=username%>
 								</span>
 
 								<i class="ace-icon fa fa-caret-down"></i>
@@ -351,7 +351,7 @@
 								</li>-->
 
 								<li>
-									<a href="profile.html">
+									<a href="/admin_reset_password">
 										<i class="ace-icon fa fa-user"></i>
 										Reset Password
 									</a>
@@ -360,7 +360,7 @@
 								<li class="divider"></li>
 
 								<li>
-									<a href="#">
+									<a href="/user_logout">
 										<i class="ace-icon fa fa-power-off"></i>
 										Logout
 									</a>

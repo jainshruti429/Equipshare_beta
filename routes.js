@@ -118,19 +118,17 @@ module.exports = function(app, passport) {
             //this function is called when LocalStrategy returns done function with parameters
             if(err) return res.render('./admin_login.ejs', {msg : 'Please Try Again!'});;    
             //if username or password doesn't match
-            if(!user) return res.render('./user_login.ejs', {msg: 'Please Try Again!', login_para : 1, id:0});  
+            if(!user) return res.render('./admin_login.ejs', {msg: 'Please Try Again!'});  
             //this is when login is successful
             req.logIn(user, function(err) {
                 if (err) return next(err); 
-                else return res.render('./admin_index.ejs', {msg:('Welcome '+req.session.name), username:req.session.name});
+                else return next()
             });   
         })(req,res,next);
-    });
+    }, admin_functions.home);
 
  // all are checking that the user is first logged in and then that he is of the right category that the request belong to.
-    app.get('/admin', general_functions.isLoggedInfunc, admin_access, function(req,res){
-        res.render('./admin_index.ejs', {msg:('Welcome '+req.session.name), username:req.session.name});e
-    });
+    app.get('/admin', general_functions.isLoggedInfunc, admin_access, admin_functions.home);
     app.get('/admin_inquiry', general_functions.isLoggedInfunc, admin_access, admin_functions.inquiry);
     app.get('/admin_resolved:sno', general_functions.isLoggedInfunc, admin_access, admin_functions.resolved, admin_functions.inquiry);
     app.post('/admin_comment:sno', general_functions.isLoggedInfunc, admin_access, admin_functions.comment, admin_functions.inquiry);
@@ -168,20 +166,19 @@ module.exports = function(app, passport) {
     app.post('/admin_add_new_admin', general_functions.isLoggedInfunc, admin_access, admin_functions.post_add_new_admin);
     app.get("/admin_add_equipment_type",general_functions.isLoggedInfunc, admin_access,admin_functions.get_add_equipment_type);
 	app.post("/admin_add_equipment_type",general_functions.isLoggedInfunc, admin_access, admin_functions.post_add_equipment_type);
-    app.get("/admin_unavailable:id", general_functions.isLoggedInfunc, admin_access,admin_functions.unavailable);
+    app.get("/admin_unavailable:id", general_functions.isLoggedInfunc, admin_access,admin_functions.unavailable, admin_functions.view_equipment);
     app.get('/admin_views:equip_id', general_functions.isLoggedInfunc,admin_access, admin_functions.views);
     app.get('/admin_requests:equip_id', general_functions.isLoggedInfunc,admin_access, admin_functions.requests);
     app.get('/admin_reset_password', general_functions.isLoggedInfunc,admin_access, admin_functions.get_reset_password);
-    app.post('/admin_reset_password', general_functions.isLoggedInfunc,admin_access, admin_functions.post_reset_password);
+    app.post('/admin_reset_password', general_functions.isLoggedInfunc,admin_access, admin_functions.post_reset_password, admin_functions.home);
     app.get('/admin_update_equipment:id',general_functions.isLoggedInfunc,admin_access, admin_functions.get_update_this_equipment);
     app.post('/admin_update_equipment:id', general_functions.isLoggedInfunc,admin_access, admin_functions.post_update_this_equipment);
-    app.get('/admin_update_profile',general_functions.isLoggedInfunc,admin_access, admin_functions.get_update_profile);
-    app.post('/admin_update_profile', general_functions.isLoggedInfunc,admin_access, admin_functions.post_update_profile);
+    // app.get('/admin_update_profile',general_functions.isLoggedInfunc,admin_access, admin_functions.get_update_profile);
+    // app.post('/admin_update_profile', general_functions.isLoggedInfunc,admin_access, admin_functions.post_update_profile);
     app.get('/csv', function(req,res){
         res.render("./csv.ejs", {msg: ''});
     });
     app.post('/csv', csv.csv);
-    app.get('/admin_logout',general_functions.isLoggedInfunc,admin_access, general_functions.logoutfunc);
 };
 
 //__________________________________
