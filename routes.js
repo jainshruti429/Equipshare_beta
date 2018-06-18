@@ -158,8 +158,8 @@ module.exports = function(app, passport) {
                 else return admin_functions.get_add_equipment(req,res);
             })(req,res,next);
     }, admin_functions.get_add_equipment_user);
-    
-    app.post('/admin_add_equipment', general_functions.isLoggedInfunc,admin_access, admin_functions.post_add_equipment);
+
+    app.post('/admin_add_equipment', general_functions.isLoggedInfunc, admin_access, admin_functions.post_add_equipment, admin_functions.get_add_equipment);
     // app.get('/admin_add_new_admin', general_functions.isLoggedInfunc, admin_access, admin_functions.get_add_new_admin);
     // app.post('/admin_add_new_admin', general_functions.isLoggedInfunc, admin_access, admin_functions.post_add_new_admin);
     app.get("/admin_add_equipment_type",general_functions.isLoggedInfunc, admin_access,admin_functions.get_add_equipment_type);

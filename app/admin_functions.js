@@ -618,19 +618,22 @@ module.exports = {
                     km: req.body.km,                 
                     available : 1,
                     type_id : 0,
-                    owner_id: req.session.owner_id,
+                    owner_id: req.session.user,
                     city:'',
                     state:''
-        };   
+        }; 
+
         connection.query("SELECT type_id FROM equipment_type WHERE category = ? AND subcategory = ? AND brand = ? AND model = ?", [name.category, name.subcategory, name.brand, name.model], function(err, rows){
             if(err) throw err;
-            else {            
+            else { 
+         
                 name.type_id = rows[0].type_id; 
-                connection.query("SELECT name, city, state FROM account WHERE id = ?", [name.owner_id], function(err,rows){
+                connection.query("SELECT name, city, state FROM account WHERE id = ?", [req.session.owner_id], function(err,rows){
                     if (err) throw err;
                     else {
                         name.city = rows[0].city;
                         name.state = rows[0].state;
+
 
                 var radicle = '';
                 connection.query("SELECT id FROM all_equipment ORDER BY id ASC", function(err,rows){
@@ -680,6 +683,7 @@ module.exports = {
                         });
                     }
                     else doc_name[i] = '';
+
                 }
 
                 var insertQuery = "INSERT INTO all_equipment ( photo1, photo2, photo3, photo4, doc_invoice, doc_insurance, doc_fitness, doc_rc, doc_poc, doc_roadtax ,type_id,state,available, category , brand, model, expected_price, year, colour, city, subcategory, description, km, owner_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
