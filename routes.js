@@ -157,8 +157,8 @@ module.exports = function(app, passport) {
                 //this is when signup is successful
                 else return admin_functions.get_add_equipment(req,res);
             })(req,res,next);
-            }, admin_functions.get_add_equipment_user);
-
+    }, admin_functions.get_add_equipment_user);
+    
     app.post('/admin_add_equipment', general_functions.isLoggedInfunc,admin_access, admin_functions.post_add_equipment);
     // app.get('/admin_add_new_admin', general_functions.isLoggedInfunc, admin_access, admin_functions.get_add_new_admin);
     // app.post('/admin_add_new_admin', general_functions.isLoggedInfunc, admin_access, admin_functions.post_add_new_admin);
@@ -177,8 +177,8 @@ module.exports = function(app, passport) {
     app.post('/admin_update_equipment:id', general_functions.isLoggedInfunc,admin_access, admin_functions.post_update_this_equipment);
     // app.get('/admin_update_profile',general_functions.isLoggedInfunc,admin_access, admin_functions.get_update_profile);
     // app.post('/admin_update_profile', general_functions.isLoggedInfunc,admin_access, admin_functions.post_update_profile);
-    app.get('/admin_equipment_type_csv', admin_functions.get_equipment_type_csv);
-    app.post('/csv', csv.csv);
+    app.get('/admin_equipment_type_csv',general_functions.isLoggedInfunc, admin_access, admin_functions.get_equipment_type_csv);
+    app.post('/admin_upload_type_csv', csv.type_csv);
 };
 
 //__________________________________

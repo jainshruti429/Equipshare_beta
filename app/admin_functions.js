@@ -427,8 +427,14 @@ module.exports = {
         res.render('./admin_index.ejs', {username : req.session.name});
     },
     
-    get_equipment_type_csv : function(err,rows){
-        res.render("admin_upload_csv.ejs", {what:"Equipment Type"});
+    get_equipment_type_csv : function(req,res){
+        req.session.title = "Equipment Type";
+        res.render("admin_upload_csv.ejs", {what:req.session.title, username : req.session.name, img_name : 'type_csv_format.png'});
+    },
+
+    get_equipment_csv : function(req,res){
+        req.session.title = " New Equipment";
+        res.render("admin_upload_csv.ejs", {what:req.session.title, username : req.session.name, img_name: ''});
     },
 
     get_add_equipment_type : function(req,res){
@@ -612,14 +618,14 @@ module.exports = {
                     km: req.body.km,                 
                     available : 1,
                     type_id : 0,
-                    owner_id: req.session.user,
+                    owner_id: req.session.owner_id,
                     city:'',
                     state:''
         };   
         connection.query("SELECT type_id FROM equipment_type WHERE category = ? AND subcategory = ? AND brand = ? AND model = ?", [name.category, name.subcategory, name.brand, name.model], function(err, rows){
             if(err) throw err;
-            else { 
-                name.type_id = rows[0].type_id;       
+            else {            
+                name.type_id = rows[0].type_id; 
                 connection.query("SELECT name, city, state FROM account WHERE id = ?", [name.owner_id], function(err,rows){
                     if (err) throw err;
                     else {
@@ -657,12 +663,12 @@ module.exports = {
                 var resultd = [];
                 var doc_name = [];
 
-                doc[1] = req.files.doc1;
-                doc[2] = req.files.doc2;
-                doc[3] = req.files.doc3;
-                doc[4] = req.files.doc4;
-                doc[5] = req.files.doc5;
-                doc[6] = req.files.doc6;
+                doc[1] = req.files.doc_invoice;
+                doc[2] = req.files.doc_insurance;
+                doc[3] = req.files.doc_fitness;
+                doc[4] = req.files.doc_rc;
+                doc[5] = req.files.doc_poc;
+                doc[6] = req.files.doc_roadtax;
 
                 for(var i = 1; i<7 ; i++){
                     if(doc[i]){
@@ -676,7 +682,7 @@ module.exports = {
                     else doc_name[i] = '';
                 }
 
-                var insertQuery = "INSERT INTO all_equipment ( photo1, photo2, photo3, photo4, doc1, doc2, doc3, doc4, doc5, doc6 ,type_id,state,available, category , brand, model, expected_price, year, colour, city, subcategory, description, km, owner_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                var insertQuery = "INSERT INTO all_equipment ( photo1, photo2, photo3, photo4, doc_invoice, doc_insurance, doc_fitness, doc_rc, doc_poc, doc_roadtax ,type_id,state,available, category , brand, model, expected_price, year, colour, city, subcategory, description, km, owner_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
                 connection.query(insertQuery, [photo_name[1],photo_name[2],photo_name[3],photo_name[4],doc_name[1],doc_name[2],doc_name[3],doc_name[4],doc_name[5],doc_name[6],name.type_id, name.state, name.available, name.category,name.brand, name.model, name.expected_price, name.year, name.colour, name.city, name.subcategory, name.description,name.km,name.owner_id],function (err4, resulti){
                     if (err4) throw err4;
                     else {
@@ -691,7 +697,6 @@ module.exports = {
                 }); 
             }
         });        
-    }   
-
+    } 
     
 }

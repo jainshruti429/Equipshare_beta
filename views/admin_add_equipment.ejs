@@ -117,17 +117,17 @@
 								<!-- PAGE CONTENT BEGINS -->
 								
 								<div>
-                                    <form class="form-horizontal" role="form">
+                                    <form class="form-horizontal" role="form" method ="post" action = "/admin_add_equipment" enctype = "multipart/form-data">
 									<div class="form-group">
 										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Category </label>
 
-										<div class="col-sm-9">
+									<div class="col-sm-9">
 											<select class="form-cntrol col-xs-10 col-sm-7" name = "category" onchange="if(this.value!= 0) { find_subcategory(this.value); }" id = 'cat' required>
-								<option value="0">Select Category</option>
-                <%for(var i = 0;i< cat_rows.length; i++){%> 
-								  <option value="<%=cat_rows[i].category%>"><%=cat_rows[i].category%> </option>
+										<option value="0">Select Category</option>
+                					<%for(var i = 0;i< cat_rows.length; i++){%> 
+								  		<option value="<%=cat_rows[i].category%>"><%=cat_rows[i].category%></option>
 							    <%}%>
-							    </select>
+							    			</select>
 										</div>
 									</div>
 
@@ -135,7 +135,7 @@
 										<label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> Sub Category </label>
 
 										<div class="col-sm-9">
-											<select class="form-cntrol col-xs-10 col-sm-7" name = "subcategory" onchange="if(this.value!= 0) { find_brand(this.value); }" list = 'subcat' required></select>
+											<select id = "subcat" class="form-cntrol col-xs-10 col-sm-7" name = "subcategory" onchange="if(this.value!= 0) { find_brand(this.value); }" list = 'subcat' required></select>
 										</div>
 									</div>
 
@@ -145,7 +145,7 @@
 										<label class="col-sm-3 control-label no-padding-right" for="form-field-2"> Brand </label>
 
 										<div class="col-sm-9">
-											<select class="form-cntrol col-xs-10 col-sm-7" name = "brand" onchange="if(this.value!= 0) { find_model(this.value); }" list = 'brand' required></select>
+											<select  id = "brand" class="form-cntrol col-xs-10 col-sm-7" name = "brand" onchange="if(this.value!= 0) { find_model(this.value); }" list = 'brand' required></select>
 										</div>
 									</div>
 
@@ -170,15 +170,6 @@
 										</div>
 									</div>
                                         
-                                        <div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Description </label>
-
-										<div class="col-sm-9">
-											<!--<input type="number" id="form-field-1" placeholder="Enter Year" class="col-xs-10 col-sm-7" />-->
-                                            <textarea rows="3" class="col-sm-7 col-xs-10" placeholder="Enter Description" name="description"></textarea>
-										</div>
-									</div>
-                                        
                                          <div class="form-group">
 										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Km </label>
 
@@ -196,82 +187,84 @@
 									</div>
                                          
                                          <div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Description </label>
+
+										<div class="col-sm-9">
+											<!--<input type="number" id="form-field-1" placeholder="Enter Year" class="col-xs-10 col-sm-7" />-->
+                                            <textarea rows="3" class="col-sm-7 col-xs-10" placeholder="Enter Description" name="description"></textarea>
+										</div>
+									</div>
+
+                                         <div class="form-group">
 										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Featured Photo </label>
 
 										<div class="col-sm-9">
-                                            <input type="file" class="col-xs-10 col-sm-7" name="featured_photo">
+                                            <input type="file" class="col-xs-10 col-sm-7" name="photo1" required/>
 										</div>
 									</div>
                                         
                                         <div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Additional Photos </label>
+										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Photo 2 </label>
 
 										<div class="col-sm-9">
-                                            <input type="file" class="col-xs-10 col-sm-7" name="add_photo_1">
+                                            <input type="file" class="col-xs-10 col-sm-7" name="photo2" required/>
 										</div>
 									</div>
                                         
                                         <div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Additional Photo </label>
+										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Photo 3 </label>
 
 										<div class="col-sm-9">
-                                            <input type="file" class="col-xs-10 col-sm-7" name="add_photo_2">
+                                            <input type="file" class="col-xs-10 col-sm-7" name="photo3" required/>
 										</div>
 									</div>
                                         
                                         <div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Additional Photo </label>
+										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Photo 4 </label>
 										<div class="col-sm-9">
-                                            <input type="file" class="col-xs-10 col-sm-7" name="add_photo_3">
-										</div>
-									</div>
-                                        
-                                        <div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Additional Photo </label>
-										<div class="col-sm-9">
-                                            <input type="file" class="col-xs-10 col-sm-7" name="add_photo_4">
+                                            <input type="file" class="col-xs-10 col-sm-7" name="photo4" required/>
 										</div>
 									</div>
                                         
                                         <div class="form-group">
 										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Invoice Document </label>
 										<div class="col-sm-9">
-                                            <input type="file" class="col-xs-10 col-sm-7" name="invoice_doc">
+                                            <input type="file" class="col-xs-10 col-sm-7" name="doc_invoice" required/>
 										</div>
 									</div>
                                         
                                         <div class="form-group">
 										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Insurance Document </label>
 										<div class="col-sm-9">
-                                            <input type="file" class="col-xs-10 col-sm-7" name="insurance_doc">
+                                            <input type="file" class="col-xs-10 col-sm-7" name="doc_insurance" required/>
 										</div>
 									</div>
                                         
                                         <div class="form-group">
 										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Fitness Document </label>
 										<div class="col-sm-9">
-                                            <input type="file" class="col-xs-10 col-sm-7" name="fitness_doc">
+                                            <input type="file" class="col-xs-10 col-sm-7" name="doc_fitness">
 										</div>
 									</div>
                                         
                                         <div class="form-group">
 										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> RC Document </label>
 										<div class="col-sm-9">
-                                            <input type="file" class="col-xs-10 col-sm-7" name="rc_doc">
+                                            <input type="file" class="col-xs-10 col-sm-7" name="doc_rc">
 										</div>
 									</div>
                                         
                                         <div class="form-group">
 										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> POC Document </label>
 										<div class="col-sm-9">
-                                            <input type="file" class="col-xs-10 col-sm-7" name="poc_doc">
+                                            <input type="file" class="col-xs-10 col-sm-7" name="doc_poc">
 										</div>
 									</div>
                                         
                                         <div class="form-group">
 										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Roadtax Document </label>
 										<div class="col-sm-9">
-                                            <input type="file" class="col-xs-10 col-sm-7" name="roadtax_doc">
+                                            <input type="file" class="col-xs-10 col-sm-7" name="doc_roadtax">
 										</div>
 									</div>
                                         
@@ -314,8 +307,7 @@
 												<input type="text" name="tags" id="form-field-tags" value="Tag Input Control" placeholder="Enter tags ..." />
 											</div>
 										</div>
-									</div> --
->
+									</div> -->
                                         
                                       <!--choose a state here-->
                                        <!-- <div class="form-group">
