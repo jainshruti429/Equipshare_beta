@@ -511,7 +511,7 @@ module.exports = {
         });
     },
     
-    unavailable: function(req,res){
+    unavailable: function(req,res, next){
         connection.query("UPDATE all_equipment SET available = 0 WHERE id = ?",[req.params.id], function(err, rows){
             if(err) throw err;
             else next();
