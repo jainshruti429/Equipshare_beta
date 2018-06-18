@@ -217,9 +217,10 @@ module.exports = {
         if(mm<10) mm = '0'+mm; 
         today = dd + '/' + mm + '/' + yyyy;
 
-        connection.query('SELECT * FROM featured WHERE equip_id=?',[req.params.id],function(err1,rows1){
+        connection.query('SELECT * FROM featured WHERE equip_id=? and display = 1',[req.params.id],function(err1,rows1){
             if(err1) throw err1;
-            else {
+            else if(rows1.length) return next();
+            else{
                 connection.query("INSERT INTO featured (equip_id,display,start_date, views, end_date) VALUES (?,?,?,?,?)",[req.params.id,1,today,0, 0], function(err){
                     if (err) throw err;
                     else return next();
@@ -229,7 +230,8 @@ module.exports = {
     },
 
     view_equipment: function(req , res){
-        res.render("./admin_view_equipment.ejs", {datarows:datarows, data:data, my : 0, username:req.session.name});
+        req.session.title = "Available Equipments";
+        res.render("./admin_view_equipment.ejs", { title : req.session.title, datarows:datarows, data:data, my : 0, username:req.session.name});
     },
 
     view_all_equipments: function(req , res){
@@ -267,8 +269,9 @@ module.exports = {
                                         }
                                     }
                                     if(!info[i].requests) info[i].requests = 0;
-                                } 
-                                res.render("./admin_view_equipment.ejs", {datarows:rows, data:info, my : 0, username:req.session.name});
+                                }
+                                req.session.title = "All Equipments"; 
+                                res.render("./admin_view_equipment.ejs", {title : req.session.title,datarows:rows, data:info, my : 0, username:req.session.name});
                             }
                         });
                     }
@@ -313,7 +316,8 @@ module.exports = {
                                     }
                                     if(!info[i].requests) info[i].requests = 0;
                                 } 
-                                res.render("./admin_view_equipment.ejs", {datarows:rows, data:info, my : 1 , username:req.session.name});
+                                req.session.title = "My Equipments"
+                                res.render("./admin_view_equipment.ejs", {title : req.session.title,datarows:rows, data:info, my : 1 , username:req.session.name});
                             }
                         });
                     }
@@ -423,6 +427,10 @@ module.exports = {
         res.render('./admin_index.ejs', {username : req.session.name});
     },
     
+    get_equipment_type_csv : function(err,rows){
+        res.render("admin_upload_csv.ejs", {what:"Equipment Type"});
+    },
+
     get_add_equipment_type : function(req,res){
         res.render('./admin_add_equipment_type.ejs', {username:req.session.name});
     },

@@ -164,7 +164,11 @@ module.exports = function(app, passport) {
     // app.post('/admin_add_new_admin', general_functions.isLoggedInfunc, admin_access, admin_functions.post_add_new_admin);
     app.get("/admin_add_equipment_type",general_functions.isLoggedInfunc, admin_access,admin_functions.get_add_equipment_type);
 	app.post("/admin_add_equipment_type",general_functions.isLoggedInfunc, admin_access, admin_functions.post_add_equipment_type, admin_functions.get_add_equipment_type);
-    app.get("/admin_unavailable:id", general_functions.isLoggedInfunc, admin_access,admin_functions.unavailable, admin_functions.view_equipment);
+    app.get("/admin_unavailable:id", general_functions.isLoggedInfunc, admin_access,admin_functions.unavailable,function(req,res,next){
+        if(req.session.title == "My Equipments")admin_functions.my_equipment(req,res);
+        else if(req.session.title == "All Equipments")admin_functions.view_all_equipments(req,res);
+        else next();
+    },admin_functions.available, admin_functions.view_equipment);
     app.get('/admin_views:equip_id', general_functions.isLoggedInfunc,admin_access, admin_functions.views);
     app.get('/admin_requests:equip_id', general_functions.isLoggedInfunc,admin_access, admin_functions.requests);
     app.get('/admin_reset_password', general_functions.isLoggedInfunc,admin_access, admin_functions.get_reset_password);
@@ -173,9 +177,7 @@ module.exports = function(app, passport) {
     app.post('/admin_update_equipment:id', general_functions.isLoggedInfunc,admin_access, admin_functions.post_update_this_equipment);
     // app.get('/admin_update_profile',general_functions.isLoggedInfunc,admin_access, admin_functions.get_update_profile);
     // app.post('/admin_update_profile', general_functions.isLoggedInfunc,admin_access, admin_functions.post_update_profile);
-    app.get('/csv', function(req,res){
-        res.render("./admin_upload_csv.ejs", {msg: '', username: req.session.user});
-    });
+    app.get('/admin_equipment_type_csv', admin_functions.get_equipment_type_csv);
     app.post('/csv', csv.csv);
 };
 

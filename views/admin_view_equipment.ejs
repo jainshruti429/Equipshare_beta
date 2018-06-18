@@ -138,7 +138,7 @@
                                         
                                         
 										<div class="table-header">
-											Results for "All Equipments"
+											Results for "<%=title%>"
 										</div>
 
 										<!-- div.table-responsive -->
@@ -183,6 +183,11 @@
 
 														<td>
 															<div class="hidden-sm hidden-xs btn-group">
+															<a href = "/admin_view_details<%=datarows[i].id%>">
+                                                                <button class="btn btn-xs btn-success">
+																<i class="fa fa-eye" aria-hidden="true"></i>
+															</button>
+															</a>
                                                             <%if(datarows[i].available){%>
                                                             <a href = "/admin_unavailable<%=datarows[i].id%>">    
                                                                 <button class="btn btn-xs btn-danger">
@@ -197,12 +202,8 @@
                                                                 </button>
                                                             </a>
                                                             <%}%>
-                                                            <a href = "/admin_view_details<%=datarows[i].id%>">
-                                                                <button class="btn btn-xs btn-success">
-																<i class="fa fa-eye" aria-hidden="true"></i>
-															</button>
-															</a>
-														</div>
+                                               
+															</div>
                                                             
                                                             
 
