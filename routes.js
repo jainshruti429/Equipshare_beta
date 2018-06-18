@@ -155,7 +155,15 @@ module.exports = function(app, passport) {
                 //if username or password doesn't match
                 if(!user) return next();
                 //this is when signup is successful
-                else return admin_functions.get_add_equipment(req,res);
+                else{ 
+                    connection.query("SELECT id FROM account WHERE mobile = ?",[req.body.mobile], function(err1,rows1){
+                        if(err1) throw err1;
+                        else{
+                            req.session.owner_id = rows1[0].id;
+                            return admin_functions.get_add_equipment(req,res);
+                        }
+                    });
+                }
             })(req,res,next);
     }, admin_functions.get_add_equipment_user);
 
@@ -179,6 +187,9 @@ module.exports = function(app, passport) {
     // app.post('/admin_update_profile', general_functions.isLoggedInfunc,admin_access, admin_functions.post_update_profile);
     app.get('/admin_equipment_type_csv',general_functions.isLoggedInfunc, admin_access, admin_functions.get_equipment_type_csv);
     app.post('/admin_upload_type_csv', csv.type_csv);
+    app.get('/admin_equipment_csv',general_functions.isLoggedInfunc, admin_access, admin_functions.get_equipment_csv);
+    app.post('/admin_upload_equipment_csv', csv.equipment_csv);
+
 };
 
 //__________________________________
