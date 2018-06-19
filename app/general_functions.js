@@ -33,7 +33,9 @@ var isLoggedIn = function(req, res) {
 
 var index_featured = [];
 connection.query("SELECT all_equipment.photo1, all_equipment.expected_price, all_equipment.subcategory,all_equipment.category, all_equipment.brand, all_equipment.model, all_equipment.id FROM all_equipment INNER JOIN featured ON featured.equip_id = all_equipment.id WHERE featured.display = 1",function(errf,featured){
-    if(errf) throw errf;
+    if(errf) {
+    console.log(errf);
+    throw errf;}
     else index_featured = featured;
 });
 
