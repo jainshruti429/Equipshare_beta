@@ -265,11 +265,31 @@
     
   <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
                              <ol type="I" style="list-style:upper-roman;padding-left:30px;" class="custom-detail-ol">
-          <li><a href="files/bootstrap_tutorial.pdf">&nbsp;&nbsp;&nbsp;Bootstrap Tutorial</a></li>
-          <li><a href="files/bootstrap_tutorial.pdf">&nbsp;&nbsp;&nbsp;Bootstrap Tutorial</a></li>
-          <li><a href="files/bootstrap_tutorial.pdf">&nbsp;&nbsp;&nbsp;Bootstrap Tutorial</a></li>
-          <li><a href="files/bootstrap_tutorial.pdf">&nbsp;&nbsp;&nbsp;Bootstrap Tutorial</a></li>
-      
+          <%if(equip_data[0].doc_invoice){%>
+          <li><a href="docs/<%=equip_data[0].doc_invoice%>">&nbsp;&nbsp;&nbsp;Invoice</a></li>
+          <%}%>
+          <%if(equip_data[0].doc_insurance){%>
+          <li><a href="docs/<%=equip_data[0].doc_insurance%>">&nbsp;&nbsp;&nbsp;Insurance</a></li>
+          <%}%>
+          <%if(equip_data[0].doc_rc){%>
+          <li><a href="docs/<%=equip_data[0].doc_rc%>">&nbsp;&nbsp;&nbsp;RC</a></li>
+          <%}%>
+          <%if(equip_data[0].doc_poc){%>
+          <li><a href="docs/<%=equip_data[0].doc_poc%>">&nbsp;&nbsp;&nbsp;POC</a></li>
+          <%}%>
+          <%if(equip_data[0].doc_fitness){%>
+          <li><a href="docs/<%=equip_data[0].doc_fitness%>">&nbsp;&nbsp;&nbsp;fitness</a></li>
+          <%}%>
+          <%if(equip_data[0].doc_roadtax){%>
+          <li><a href="docs/<%=equip_data[0].doc_roadtax%>">&nbsp;&nbsp;&nbsp;roadtax</a></li>
+          <%}%>
+          <%if(tech_info.doc1){%>
+          <li><a href="docs/<%=tech_info.doc1%>">&nbsp;&nbsp;&nbsp;Brochure</a></li>
+          <%}%>
+          <%if(tech_info.doc2){%>
+          <li><a href="docs/<%=tech_info.doc2%>">&nbsp;&nbsp;&nbsp;Technical Doccument</a></li>
+          <%}%>
+          
       </ol>
                             </div>
 </div>

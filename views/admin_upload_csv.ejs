@@ -135,15 +135,17 @@
 									<div class="col-xs-12">
                                          
                                         <h3 class="center-block text-center">Upload CSV for uploading <%=what%> in bulk. CSV should be in the following format and remove the first row(heading row) before uploading.</h3>
-                                        %<if(what == "Equipment Type"){%>
+                                        <%if(what == "Equipment Type"){%>
                                          <form class="form-horizontal" role="form" method="post" enctype="multipart/form-data" action = "/admin_upload_type_csv">
                                          <%}
                                          else{ %>
-                                         <form class="form-horizontal" role="form" method="post" enctype="multipart/form-data" action = "/admin_upload_csv">
-                                         %<}%>
+                                         <form class="form-horizontal" role="form" method="post" enctype="multipart/form-data" action = "/admin_upload_equipment_csv">
+                                         <%}%>
                                              <div class="form-group text-center center-block">
 										<div class="col-sm-12 center-block text-center">
-					 <label class="btn-bs-file btn btn-lg btn-primary center-block text-center">Upload CSV<input type="file" /></label>
+					 <label class="btn-bs-file btn btn-lg btn-primary center-block text-center">Upload CSV<input type="file" name = "csv"/></label>
+					 <br><br>
+					 <input type = "submit" class = "btn btn-success" value="Submit"/>
 										</div>
 									</div>
                                         

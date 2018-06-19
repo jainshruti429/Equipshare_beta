@@ -42,11 +42,7 @@
                             <p class="price-para-custom">$&nbsp;<%=equip_data[0].expected_price%></p> 
                             </div>
                             
-                            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                            <a href="/user_request<%=equip_data[0].id%>&<%=equip_data[0].owner_id%>">
-                            <input type="submit" class="btn btn-primary custom-buy-btn" value ="BUY NOW"></a>
-                            
-                            </div>
+                           
                             
                         </div>
                         <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" style="width:100%;margin:10px 0;">Owner Details</button>
@@ -296,10 +292,30 @@
     
   <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
         <ol type="I" style="list-style:upper-roman;padding-left:30px;" class="custom-detail-ol">
-          <li><a href="files/bootstrap_tutorial.pdf">&nbsp;&nbsp;&nbsp;Bootstrap Tutorial</a></li>
-          <li><a href="files/bootstrap_tutorial.pdf">&nbsp;&nbsp;&nbsp;Bootstrap Tutorial</a></li>
-          <li><a href="files/bootstrap_tutorial.pdf">&nbsp;&nbsp;&nbsp;Bootstrap Tutorial</a></li>
-          <li><a href="files/bootstrap_tutorial.pdf">&nbsp;&nbsp;&nbsp;Bootstrap Tutorial</a></li>
+          <%if(equip_data[0].doc_invoice){%>
+          <li><a href="docs/<%=equip_data[0].doc_invoice%>">&nbsp;&nbsp;&nbsp;Invoice</a></li>
+          <%}%>
+          <%if(equip_data[0].doc_insurance){%>
+          <li><a href="docs/<%=equip_data[0].doc_insurance%>">&nbsp;&nbsp;&nbsp;Insurance</a></li>
+          <%}%>
+          <%if(equip_data[0].doc_rc){%>
+          <li><a href="docs/<%=equip_data[0].doc_rc%>">&nbsp;&nbsp;&nbsp;RC</a></li>
+          <%}%>
+          <%if(equip_data[0].doc_poc){%>
+          <li><a href="docs/<%=equip_data[0].doc_poc%>">&nbsp;&nbsp;&nbsp;POC</a></li>
+          <%}%>
+          <%if(equip_data[0].doc_fitness){%>
+          <li><a href="docs/<%=equip_data[0].doc_fitness%>">&nbsp;&nbsp;&nbsp;fitness</a></li>
+          <%}%>
+          <%if(equip_data[0].doc_roadtax){%>
+          <li><a href="docs/<%=equip_data[0].doc_roadtax%>">&nbsp;&nbsp;&nbsp;roadtax</a></li>
+          <%}%>
+          <%if(tech_info.doc1){%>
+          <li><a href="docs/<%=tech_info.doc1%>">&nbsp;&nbsp;&nbsp;Brochure</a></li>
+          <%}%>
+          <%if(tech_info.doc2){%>
+          <li><a href="docs/<%=tech_info.doc2%>">&nbsp;&nbsp;&nbsp;Technical Doccument</a></li>
+          <%}%>
       
       </ol>
        </div>

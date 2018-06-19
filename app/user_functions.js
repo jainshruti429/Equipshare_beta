@@ -23,7 +23,6 @@ var crypto = require('crypto');
 
 // //=================================================
 
-var others = require('./others');
 var general_functions = require("./general_functions");
 
 //general check if category is user or dealer
@@ -291,7 +290,8 @@ module.exports =  {
                     type_id : 0,
                     owner_id: req.session.user,
                     city:'',
-                    state:''
+                    state:'',
+                    uploaded_by : 0
         };   
         connection.query("SELECT type_id FROM equipment_type WHERE category = ? AND subcategory = ? AND brand = ? AND model = ?", [name.category, name.subcategory, name.brand, name.model], function(err, rows){
         	if(err) throw err;
@@ -353,8 +353,8 @@ module.exports =  {
 		           	else doc_name[i] = '';
 		        }
 
-		        var insertQuery = "INSERT INTO all_equipment ( photo1, photo2, photo3, photo4, doc_invoice, doc_insurance, doc_fitness, doc_rc, doc_poc, doc_roadtax ,type_id,state,available, category , brand, model, expected_price, year, colour, city, subcategory, description, km, owner_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-		        connection.query(insertQuery, [photo_name[1],photo_name[2],photo_name[3],photo_name[4],doc_name[1],doc_name[2],doc_name[3],doc_name[4],doc_name[5],doc_name[6],name.type_id, name.state, name.available, name.category,name.brand, name.model, name.expected_price, name.year, name.colour, name.city, name.subcategory, name.description,name.km,name.owner_id],function (err4, resulti){
+		        var insertQuery = "INSERT INTO all_equipment (uploaded_by, photo1, photo2, photo3, photo4, doc_invoice, doc_insurance, doc_fitness, doc_rc, doc_poc, doc_roadtax ,type_id,state,available, category , brand, model, expected_price, year, colour, city, subcategory, description, km, owner_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		        connection.query(insertQuery, [name.uploaded_by, photo_name[1],photo_name[2],photo_name[3],photo_name[4],doc_name[1],doc_name[2],doc_name[3],doc_name[4],doc_name[5],doc_name[6],name.type_id, name.state, name.available, name.category,name.brand, name.model, name.expected_price, name.year, name.colour, name.city, name.subcategory, name.description,name.km,name.owner_id],function (err4, resulti){
 		            if (err4) throw err4;
 		            else {
                         req.session.msg = "Your equipment is added successfully...";

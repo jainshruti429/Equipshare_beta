@@ -23,7 +23,6 @@ var crypto = require('crypto');
 
 // //=================================================
 
-var others = require('./others');
 
 var isLoggedIn = function(req, res) {  
         var x ;

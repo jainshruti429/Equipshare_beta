@@ -182,13 +182,17 @@ module.exports = function(app, passport) {
     app.get('/admin_reset_password', general_functions.isLoggedInfunc,admin_access, admin_functions.get_reset_password);
     app.post('/admin_reset_password', general_functions.isLoggedInfunc,admin_access, admin_functions.post_reset_password, admin_functions.home);
     app.get('/admin_update_equipment:id',general_functions.isLoggedInfunc,admin_access, admin_functions.get_update_this_equipment);
-    app.post('/admin_update_equipment:id', general_functions.isLoggedInfunc,admin_access, admin_functions.post_update_this_equipment);
+    app.post('/admin_update_equipment:id', general_functions.isLoggedInfunc,admin_access, admin_functions.post_update_this_equipment, function(req,res,next){
+        if(req.session.title == "My Equipments")admin_functions.my_equipment(req,res);
+        else if(req.session.title == "All Equipments")admin_functions.view_all_equipments(req,res);
+        else next();
+    },admin_functions.available, admin_functions.view_equipment);
     // app.get('/admin_update_profile',general_functions.isLoggedInfunc,admin_access, admin_functions.get_update_profile);
     // app.post('/admin_update_profile', general_functions.isLoggedInfunc,admin_access, admin_functions.post_update_profile);
     app.get('/admin_equipment_type_csv',general_functions.isLoggedInfunc, admin_access, admin_functions.get_equipment_type_csv);
-    app.post('/admin_upload_type_csv', csv.type_csv);
+    app.post('/admin_upload_type_csv',general_functions.isLoggedInfunc, admin_access, csv.type_csv, admin_functions.get_add_equipment_type);
     app.get('/admin_equipment_csv',general_functions.isLoggedInfunc, admin_access, admin_functions.get_equipment_csv);
-    app.post('/admin_upload_equipment_csv', csv.equipment_csv);
+    app.post('/admin_upload_equipment_csv', general_functions.isLoggedInfunc, admin_access,csv.equipment_csv, admin_functions.get_add_equipment_user);
 
 };
 
