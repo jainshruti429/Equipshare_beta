@@ -19,7 +19,7 @@ module.exports = {
       // server configs.
         'host' : 'equipshare.cltmsxnlpv2o.ap-south-1.rds.amazonaws.com',
         'user': 'chitransh',
-        'password': '123chitransh'
-    },
+        'password': '123chitransh',
         'database': 'eqsAuction'
+    }
 };
