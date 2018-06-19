@@ -40,7 +40,10 @@ var isLoggedIn = function(req, res) {
 
 var cat_rows = [];
 connection.query("SELECT DISTINCT category FROM equipment_type", function(errc,crows){
-    if(errc) throw errc;
+    if(errc) {
+	    console.log(errc);
+	    throw errc;
+    }
     else cat_rows = crows;
 });
 
