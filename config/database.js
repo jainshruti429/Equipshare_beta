@@ -8,9 +8,9 @@
 //       // local configs.
 //         'host' : 'localhost',
 //         'user': 'root',
-//         'password': 'root@SQL1'
-//     },
-//         'database': 'eqsAuction'
+//         'password': 'root@SQL1',
+// 			'database': 'eqsAuction'
+//     }   
 // };
 
 //=================================USE THIS FOR SERVER===================================
