@@ -52,7 +52,7 @@ module.exports = function(app, passport) {
 // =========================== USER FUNCTIONS ================================================== 
 // =======================================================================================
     app.get('/login:id', general_functions.login);
-    /*
+    
     app.post('/user_login:id', function(req, res, next){
             //call the local-login in ../config/passport.js
             passport.authenticate('local-login', function (err, user, info) {
@@ -207,5 +207,5 @@ var admin_access = function access(req,res,next){
     if(req.session.category==0) return next();
     return res.render("error.ejs");
 }
-*/
+
 }
