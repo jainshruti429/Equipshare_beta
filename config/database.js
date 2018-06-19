@@ -17,9 +17,9 @@
 module.exports = {
     'connection': {
       // server configs.
-        'host' : 'equipshare.cltmsxnlpv2o.ap-south-1.rds.amazonaws.com',
-        'user': 'chitransh',
-        'password': '123chitransh',
+        'host' : 'mydbinstance.cltmsxnlpv2o.ap-south-1.rds.amazonaws.com',
+        'user': 'aakash',
+        'password': '123aakash',
         'database': 'eqsAuction'
     }
 };
