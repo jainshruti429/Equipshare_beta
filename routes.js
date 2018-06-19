@@ -8,7 +8,7 @@ var mysql = require('mysql');
 var dbconfig = require('./config/database');
 var connection = mysql.createConnection(dbconfig.connection);
 
-//connection.query('USE ' + dbconfig.database);
+connection.query('USE ' + dbconfig.database);
 
 var express  = require('express');
 var app = express();
