@@ -58,12 +58,12 @@ module.exports = function(app, passport) {
             passport.authenticate('local-login', function (err, user, info) {
                 // info is json given by passport.aunthicate
                 //this function is called when LocalStrategy returns done function with parameters
-                if(err) return res.render('./user_login.ejs', {msg : 'Please Try Again!', login_para : 1, id:req.params.id});    
+                if(err) return res.render('./user_login.ejs', {msg : 'Please Try Again!', login_para : 1, id:req.params.id, isLoggedIn : 0 });    
                 //if username or password doesn't match
-                if(!user) return res.render('./user_login.ejs', {msg: 'Please Try Again!', login_para : 1, id:req.params.id});  
+                if(!user) return res.render('./user_login.ejs', {msg: 'Please Try Again!', login_para : 1, id:req.params.id, isLoggedIn : 0});  
                 //this is when login is successful
                 req.logIn(user, function(err) {
-                    if (err) return res.render('./user_login.ejs', {msg : 'Please Try Again!', login_para : 1, id:req.params.id}); 
+                    if (err) return res.render('./user_login.ejs', {msg : 'Please Try Again!', login_para : 1, id:req.params.id, isLoggedIn : 0}); 
                     else  return next();
                 });   
             })(req,res,next);
@@ -75,13 +75,13 @@ module.exports = function(app, passport) {
     app.post('/user_signup:id', function(req, res, next){
             passport.authenticate('local-signup', function (err, user, info) {
                 //this function is called when LocalStrategy returns done function with parameters
-                if(err) return res.render('./user_signup.ejs', {msg : 'Please Try Again!', id:req.params.id});    
+                if(err) return res.render('./user_login.ejs', {msg : 'Please Try Again!', id:req.params.id, login_para:0, isLoggedIn : 0});    
                 //if username or password doesn't match
-                if(!user) return res.render('./user_signup.ejs', {msg:info.message});
-                if (req.body.password != req.body.retype_password) return res.render('./user_signup.ejs',{msg:'passwords did not match', id:req.params.id});
+                if(!user) return res.render('./user_login.ejs', {msg:info.message, id:req.params.id, login_para:0, isLoggedIn : 0});
+                if (req.body.password != req.body.retype_password) return res.render('./user_login.ejs',{msg:'passwords did not match', id:req.params.id, login_para:0, isLoggedIn : 0});
                 //if (!req.body.agree) return res.render('./user_signup.ejs',{msg:'You need to agree to TnC'});          
                 //this is when signup is successful
-                else return res.render('./user_login.ejs',{msg:'Signup successful! Login to continue', login_para:1, id:req.params.id });
+                else return res.render('./user_login.ejs',{msg:'Signup successful! Login to continue', login_para:1, id:req.params.id, isLoggedIn : 0});
             })(req,res,next);
         });
 
@@ -207,5 +207,6 @@ var admin_access = function access(req,res,next){
     if(req.session.category==0) return next();
     return res.render("error.ejs");
 }
+
 
 
